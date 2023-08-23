@@ -1,5 +1,10 @@
 package com.solo.todolist.member.controller;
 
+import com.solo.todolist.dto.SingleResponseDto;
+import com.solo.todolist.item.dto.ItemResponseDto;
+import com.solo.todolist.item.entity.Item;
+import com.solo.todolist.item.mapper.ItemMapper;
+import com.solo.todolist.item.service.ItemService;
 import com.solo.todolist.member.dto.MemberPatchDto;
 import com.solo.todolist.member.dto.MemberPostDto;
 import com.solo.todolist.member.dto.MemberResponseDto;
@@ -27,17 +32,18 @@ public class MemberController {
 
     @PostMapping
     public ResponseEntity<?> postMember(@RequestBody MemberPostDto memberPostDto) {
+
         Member member = memberMapper.memberPostDtoToMember(memberPostDto);
         Member savedMember = memberService.createMember(member);
         MemberResponseDto memberResponseDto = memberMapper.memberToMemberResponseDto(savedMember);
-        return new ResponseEntity<>(memberResponseDto, HttpStatus.CREATED);
+        return new ResponseEntity<>(new SingleResponseDto<>(memberResponseDto), HttpStatus.CREATED);
     }
 
     @GetMapping("/{memberId}")
     public ResponseEntity<?> getMember(@PathVariable Long memberId) {
         Member foundMember = memberService.findMember(memberId);
         MemberResponseDto memberResponseDto = memberMapper.memberToMemberResponseDto(foundMember);
-        return new ResponseEntity<>(memberResponseDto, HttpStatus.OK);
+        return new ResponseEntity<>(new SingleResponseDto<>(memberResponseDto), HttpStatus.OK);
     }
 
     @PatchMapping("/{memberId}")
@@ -46,7 +52,7 @@ public class MemberController {
         Member member = memberMapper.memberPatchDtoToMember(memberPatchDto);
         Member updatedMember = memberService.updateMember(memberId, member);
         MemberResponseDto memberResponseDto = memberMapper.memberToMemberResponseDto(updatedMember);
-        return new ResponseEntity<>(memberResponseDto, HttpStatus.OK);
+        return new ResponseEntity<>(new SingleResponseDto<>(memberResponseDto), HttpStatus.OK);
     }
 
     @DeleteMapping("/{memberId}")

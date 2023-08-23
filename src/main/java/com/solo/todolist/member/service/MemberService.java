@@ -24,7 +24,7 @@ public class MemberService {
 
     public Member updateMember(Long memberId, Member member) {
         Member foundMember = getVerifiedMember(memberId);
-        foundMember.changeInfo(member);
+        foundMember.changeMemberInfo(member);
         return foundMember;
     }
 
