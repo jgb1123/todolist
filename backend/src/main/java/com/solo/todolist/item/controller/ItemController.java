@@ -52,7 +52,7 @@ public class ItemController {
         return new ResponseEntity<>(new MultiResponseDTO<>(itemResponseDtos, itemPage), HttpStatus.OK);
     }
 
-    @PatchMapping("/{itemId}")
+    @PostMapping("/update/{itemId}")
     public ResponseEntity<?> patchItem(@PathVariable Long itemId,
                                         @RequestBody ItemPatchDTO itemPatchDto) {
         Item item = itemMapper.itemPatchDTOToItem(itemPatchDto);
@@ -61,7 +61,7 @@ public class ItemController {
         return new ResponseEntity<>(new SingleResponseDTO<>(itemResponseDto), HttpStatus.OK);
     }
 
-    @DeleteMapping("/{itemId}")
+    @PostMapping("/delete/{itemId}")
     public ResponseEntity<?> deleteItem(@PathVariable Long itemId) {
         itemService.deleteItem(itemId);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
