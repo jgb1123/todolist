@@ -12,14 +12,12 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class ItemPostDto {
-
-    private Long memberId;
+public class ItemPatchDTO {
 
     private String title;
 
     private String content;
 
-    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
     private LocalDateTime targetTime;
 }

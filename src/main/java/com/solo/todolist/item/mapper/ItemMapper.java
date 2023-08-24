@@ -1,8 +1,8 @@
 package com.solo.todolist.item.mapper;
 
-import com.solo.todolist.item.dto.ItemPatchDto;
-import com.solo.todolist.item.dto.ItemPostDto;
-import com.solo.todolist.item.dto.ItemResponseDto;
+import com.solo.todolist.item.dto.ItemPatchDTO;
+import com.solo.todolist.item.dto.ItemPostDTO;
+import com.solo.todolist.item.dto.ItemResponseDTO;
 import com.solo.todolist.item.entity.Item;
 import lombok.Data;
 import org.springframework.stereotype.Component;
@@ -14,7 +14,7 @@ import java.util.stream.Collectors;
 @Data
 public class ItemMapper {
 
-    public Item itemPostDtoToItem(ItemPostDto itemPostDto) {
+    public Item itemPostDTOToItem(ItemPostDTO itemPostDto) {
         return Item.builder()
                 .title(itemPostDto.getTitle())
                 .content(itemPostDto.getContent())
@@ -22,7 +22,7 @@ public class ItemMapper {
                 .build();
     }
 
-    public Item itemPatchDtoToItem(ItemPatchDto itemPatchDto) {
+    public Item itemPatchDTOToItem(ItemPatchDTO itemPatchDto) {
         return Item.builder()
                 .title(itemPatchDto.getTitle())
                 .content(itemPatchDto.getContent())
@@ -30,8 +30,8 @@ public class ItemMapper {
                 .build();
     }
 
-    public ItemResponseDto itemToItemResponseDto(Item item) {
-        return ItemResponseDto.builder()
+    public ItemResponseDTO itemToItemResponseDTO(Item item) {
+        return ItemResponseDTO.builder()
                 .itemId(item.getItemId())
                 .title(item.getTitle())
                 .content(item.getContent())
@@ -39,10 +39,10 @@ public class ItemMapper {
                 .build();
     }
 
-    public List<ItemResponseDto> itemsToItemResponseDtos(List<Item> items) {
+    public List<ItemResponseDTO> itemsToItemResponseDTOs(List<Item> items) {
         return items
                 .stream()
-                .map(this::itemToItemResponseDto)
+                .map(this::itemToItemResponseDTO)
                 .collect(Collectors.toList());
     }
 }

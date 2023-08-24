@@ -1,14 +1,14 @@
 package com.solo.todolist.member.mapper;
 
-import com.solo.todolist.member.dto.MemberPatchDto;
-import com.solo.todolist.member.dto.MemberPostDto;
-import com.solo.todolist.member.dto.MemberResponseDto;
+import com.solo.todolist.member.dto.MemberPatchDTO;
+import com.solo.todolist.member.dto.MemberPostDTO;
+import com.solo.todolist.member.dto.MemberResponseDTO;
 import com.solo.todolist.member.entity.Member;
 import org.springframework.stereotype.Component;
 
 @Component
 public class MemberMapper {
-    public Member memberPostDtoToMember(MemberPostDto memberPostDto) {
+    public Member memberPostDTOToMember(MemberPostDTO memberPostDto) {
         return Member.builder()
                 .email(memberPostDto.getEmail())
                 .password(memberPostDto.getPassword())
@@ -16,14 +16,14 @@ public class MemberMapper {
                 .build();
     }
 
-    public Member memberPatchDtoToMember(MemberPatchDto memberPatchDto) {
+    public Member memberPatchDTOToMember(MemberPatchDTO memberPatchDto) {
         return Member.builder()
                 .password(memberPatchDto.getPassword())
                 .build();
     }
 
-    public MemberResponseDto memberToMemberResponseDto(Member member) {
-        return MemberResponseDto.builder()
+    public MemberResponseDTO memberToMemberResponseDTO(Member member) {
+        return MemberResponseDTO.builder()
                 .memberId(member.getMemberId())
                 .email(member.getEmail())
                 .name(member.getName())

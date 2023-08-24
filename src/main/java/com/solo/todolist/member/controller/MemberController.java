@@ -1,13 +1,9 @@
 package com.solo.todolist.member.controller;
 
-import com.solo.todolist.dto.SingleResponseDto;
-import com.solo.todolist.item.dto.ItemResponseDto;
-import com.solo.todolist.item.entity.Item;
-import com.solo.todolist.item.mapper.ItemMapper;
-import com.solo.todolist.item.service.ItemService;
-import com.solo.todolist.member.dto.MemberPatchDto;
-import com.solo.todolist.member.dto.MemberPostDto;
-import com.solo.todolist.member.dto.MemberResponseDto;
+import com.solo.todolist.dto.SingleResponseDTO;
+import com.solo.todolist.member.dto.MemberPatchDTO;
+import com.solo.todolist.member.dto.MemberPostDTO;
+import com.solo.todolist.member.dto.MemberResponseDTO;
 import com.solo.todolist.member.entity.Member;
 import com.solo.todolist.member.mapper.MemberMapper;
 import com.solo.todolist.member.service.MemberService;
@@ -31,28 +27,28 @@ public class MemberController {
     }
 
     @PostMapping
-    public ResponseEntity<?> postMember(@RequestBody MemberPostDto memberPostDto) {
+    public ResponseEntity<?> postMember(@RequestBody MemberPostDTO memberPostDto) {
 
-        Member member = memberMapper.memberPostDtoToMember(memberPostDto);
+        Member member = memberMapper.memberPostDTOToMember(memberPostDto);
         Member savedMember = memberService.createMember(member);
-        MemberResponseDto memberResponseDto = memberMapper.memberToMemberResponseDto(savedMember);
-        return new ResponseEntity<>(new SingleResponseDto<>(memberResponseDto), HttpStatus.CREATED);
+        MemberResponseDTO memberResponseDto = memberMapper.memberToMemberResponseDTO(savedMember);
+        return new ResponseEntity<>(new SingleResponseDTO<>(memberResponseDto), HttpStatus.CREATED);
     }
 
     @GetMapping("/{memberId}")
     public ResponseEntity<?> getMember(@PathVariable Long memberId) {
         Member foundMember = memberService.findMember(memberId);
-        MemberResponseDto memberResponseDto = memberMapper.memberToMemberResponseDto(foundMember);
-        return new ResponseEntity<>(new SingleResponseDto<>(memberResponseDto), HttpStatus.OK);
+        MemberResponseDTO memberResponseDto = memberMapper.memberToMemberResponseDTO(foundMember);
+        return new ResponseEntity<>(new SingleResponseDTO<>(memberResponseDto), HttpStatus.OK);
     }
 
     @PatchMapping("/{memberId}")
     public ResponseEntity<?> patchMember(@PathVariable Long memberId,
-                                         @RequestBody MemberPatchDto memberPatchDto) {
-        Member member = memberMapper.memberPatchDtoToMember(memberPatchDto);
+                                         @RequestBody MemberPatchDTO memberPatchDto) {
+        Member member = memberMapper.memberPatchDTOToMember(memberPatchDto);
         Member updatedMember = memberService.updateMember(memberId, member);
-        MemberResponseDto memberResponseDto = memberMapper.memberToMemberResponseDto(updatedMember);
-        return new ResponseEntity<>(new SingleResponseDto<>(memberResponseDto), HttpStatus.OK);
+        MemberResponseDTO memberResponseDto = memberMapper.memberToMemberResponseDTO(updatedMember);
+        return new ResponseEntity<>(new SingleResponseDTO<>(memberResponseDto), HttpStatus.OK);
     }
 
     @DeleteMapping("/{memberId}")
