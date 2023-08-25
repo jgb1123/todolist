@@ -6,13 +6,10 @@
   </div>
 </template>
 
-<script>
-
-export default {
-  props: {
-    todos: []
-  }
-}
+<script setup>
+const props = defineProps({
+  todos: []
+})
 </script>
 
 <style></style>
