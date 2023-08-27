@@ -5,20 +5,16 @@
   </div>
 </template>
 
-<script>
-export default {
-  data() {
-    return {
-      content: ''
-    }
-  },
-  methods: {
-    addToDo() {
-      alert('등록')
-      this.$emit('add-to-do', this.content)
-      this.content = ''
-    }
-  }
+<script setup>
+import { ref } from 'vue'
+
+const content = ref('');
+const emit = defineEmits(['add-to-do']);
+
+const addToDo = () => {
+  alert('등록')
+  emit('add-to-do', content.value)
+  content.value = '';
 }
 </script>
 

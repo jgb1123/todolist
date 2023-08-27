@@ -1,8 +1,8 @@
 <template>
   <div id="todolist">
-    <div id="container" v-for="data in todos" :key="data.id">
-      <li id="text">{{ data }}</li>
-    </div>
+    <q-card v-for="(todos, i) in todos" :key="i">
+      <div class="q-pa-sm">{{ todos }}</div>
+    </q-card>
   </div>
 </template>
 

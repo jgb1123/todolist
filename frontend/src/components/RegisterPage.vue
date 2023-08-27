@@ -8,10 +8,9 @@
         <q-card square bordered class="q-pa-lg shadow-1">
           <q-card-section>
             <q-form class="q-gutter-md">
-              <q-input square filled v-model="state.email" type="email" label="email" />
-              <q-input square filled v-model="state.password" type="password" label="password" />
-<!--              <q-input square filled v-model="state.passwordConfirm" type="password" label="password confirm" />-->
-              <q-input square filled v-model="state.name" label="name" />
+              <q-input square filled v-model="email" type="email" label="email" />
+              <q-input square filled v-model="password" type="password" label="password" />
+              <q-input square filled v-model="name" label="name" />
             </q-form>
           </q-card-section>
           <q-card-actions class="q-px-md">
@@ -23,20 +22,15 @@
   </q-page>
 </template>
 
-<script setup lang="ts">
-import {reactive} from "vue";
-
-const state = reactive({
-  email: "" as string,
-  password: "" as string,
-  // passwordConfirm: "" as string,
-  name: "" as string
-
-})
+<script setup>
+import {reactive, ref} from "vue";
+const email = ref("");
+const password = ref("");
+const name = ref("");
 </script>
 
 <style>
-q-card {
+.q-card {
   width: 400px;
 }
 </style>
