@@ -12,6 +12,7 @@ import com.solo.todolist.security.jwt.Tokens;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -40,25 +41,25 @@ public class MemberController {
         return new ResponseEntity<>(new SingleResponseDTO<>(memberResponseDto), HttpStatus.CREATED);
     }
 
-    @GetMapping("/{memberId}")
-    public ResponseEntity<?> getMember(@PathVariable Long memberId) {
-        Member foundMember = memberService.findMember(memberId);
+    @GetMapping()
+    public ResponseEntity<?> getMember(@AuthenticationPrincipal String email) {
+        Member foundMember = memberService.findMember(email);
         MemberResponseDTO memberResponseDto = memberMapper.memberToMemberResponseDTO(foundMember);
         return new ResponseEntity<>(new SingleResponseDTO<>(memberResponseDto), HttpStatus.OK);
     }
 
-    @PatchMapping("/{memberId}")
-    public ResponseEntity<?> patchMember(@PathVariable Long memberId,
+    @PatchMapping
+    public ResponseEntity<?> patchMember(@AuthenticationPrincipal String email,
                                          @RequestBody MemberPatchDTO memberPatchDTO) {
         Member member = memberMapper.memberPatchDTOToMember(memberPatchDTO);
-        Member updatedMember = memberService.updateMember(memberId, member);
+        Member updatedMember = memberService.updateMember(email, member);
         MemberResponseDTO memberResponseDTO = memberMapper.memberToMemberResponseDTO(updatedMember);
         return new ResponseEntity<>(new SingleResponseDTO<>(memberResponseDTO), HttpStatus.OK);
     }
 
-    @DeleteMapping("/{memberId}")
-    public ResponseEntity<?> deleteMember(@PathVariable Long memberId) {
-        memberService.deleteMember(memberId);
+    @PostMapping("/delete")
+    public ResponseEntity<?> deleteMember(@AuthenticationPrincipal String email) {
+        memberService.deleteMember(email);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }

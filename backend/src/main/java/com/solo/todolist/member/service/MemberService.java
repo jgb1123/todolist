@@ -34,21 +34,21 @@ public class MemberService {
         return memberRepository.save(member);
     }
 
-    public Member findMember(Long memberId) {
-        return getVerifiedMember(memberId);
+    public Member findMember(String email) {
+        return getVerifiedMember(email);
     }
 
-    public Member updateMember(Long memberId, Member member) {
-        Member foundMember = getVerifiedMember(memberId);
+    public Member updateMember(String email, Member member) {
+        Member foundMember = getVerifiedMember(email);
         foundMember.changeMemberInfo(member);
         return foundMember;
     }
 
-    public void deleteMember(Long memberId) {
-        memberRepository.deleteById(memberId);
+    public void deleteMember(String email) {
+        memberRepository.deleteByEmail(email);
     }
-    public Member getVerifiedMember(Long memberId) {
-        return memberRepository.findById(memberId)
+    public Member getVerifiedMember(String email) {
+        return memberRepository.findByEmail(email)
                 .orElseThrow(() -> new BusinessLogicException(ExceptionCode.MEMBER_NOT_FOUND));
     }
 }

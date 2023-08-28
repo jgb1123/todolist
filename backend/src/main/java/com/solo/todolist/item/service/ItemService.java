@@ -21,8 +21,8 @@ public class ItemService {
     private final ItemRepository itemRepository;
     private final MemberService memberService;
 
-    public Item createItem(Item item, Long memberId) {
-        Member foundMember = memberService.getVerifiedMember(memberId);
+    public Item createItem(Item item, String email) {
+        Member foundMember = memberService.getVerifiedMember(email);
         item.changeMember(foundMember);
         return itemRepository.save(item);
     }
@@ -31,8 +31,8 @@ public class ItemService {
         return getVerifiedItem(itemId);
     }
 
-    public Page<Item> findItems(Long memberId, Pageable pageable) {
-        Member foundMember = memberService.getVerifiedMember(memberId);
+    public Page<Item> findItems(String email, Pageable pageable) {
+        Member foundMember = memberService.getVerifiedMember(email);
         pageable = PageRequest.of(pageable.getPageNumber() - 1, pageable.getPageSize(), pageable.getSort());
         return itemRepository.findAllByMember(foundMember, pageable);
     }

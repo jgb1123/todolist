@@ -15,6 +15,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -30,9 +31,10 @@ public class ItemController {
     private final ItemService itemService;
 
     @PostMapping
-    public ResponseEntity<?> postItem(@RequestBody ItemPostDTO itemPostDTO) {
+    public ResponseEntity<?> postItem(@RequestBody ItemPostDTO itemPostDTO,
+                                      @AuthenticationPrincipal String email) {
         Item item = itemMapper.itemPostDTOToItem(itemPostDTO);
-        Item savedItem = itemService.createItem(item, itemPostDTO.getMemberId());
+        Item savedItem = itemService.createItem(item, email);
         ItemResponseDTO itemResponseDTO = itemMapper.itemToItemResponseDTO(savedItem);
         return new ResponseEntity<>(new SingleResponseDTO<>(itemResponseDTO), HttpStatus.CREATED);
     }
@@ -44,15 +46,6 @@ public class ItemController {
         return new ResponseEntity<>(new SingleResponseDTO<>(itemResponseDTO), HttpStatus.OK);
     }
 
-    @GetMapping("/member/{memberId}")
-    public ResponseEntity<?> getItems(@PathVariable Long memberId,
-                                      @PageableDefault(page = 1, size = 10, sort = "targetTime", direction = Sort.Direction.ASC) Pageable pageable) {
-        Page<Item> itemPage = itemService.findItems(memberId, pageable);
-        List<Item> items = itemPage.getContent();
-        List<ItemResponseDTO> itemResponseDTOs = itemMapper.itemsToItemResponseDTOs(items);
-        return new ResponseEntity<>(new MultiResponseDTO<>(itemResponseDTOs, itemPage), HttpStatus.OK);
-    }
-
     @PostMapping("/update/{itemId}")
     public ResponseEntity<?> patchItem(@PathVariable Long itemId,
                                         @RequestBody ItemPatchDTO itemPatchDTO) {
@@ -60,6 +53,15 @@ public class ItemController {
         Item updatedItem = itemService.updateItem(itemId, item);
         ItemResponseDTO itemResponseDTO = itemMapper.itemToItemResponseDTO(updatedItem);
         return new ResponseEntity<>(new SingleResponseDTO<>(itemResponseDTO), HttpStatus.OK);
+    }
+
+    @GetMapping
+    public ResponseEntity<?> getItems(@AuthenticationPrincipal String email,
+                                      @PageableDefault(page = 1, size = 10, sort = "targetTime", direction = Sort.Direction.ASC) Pageable pageable) {
+        Page<Item> itemPage = itemService.findItems(email, pageable);
+        List<Item> items = itemPage.getContent();
+        List<ItemResponseDTO> itemResponseDTOs = itemMapper.itemsToItemResponseDTOs(items);
+        return new ResponseEntity<>(new MultiResponseDTO<>(itemResponseDTOs, itemPage), HttpStatus.OK);
     }
 
     @PostMapping("/delete/{itemId}")

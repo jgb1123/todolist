@@ -14,8 +14,6 @@ import java.time.LocalDateTime;
 @Builder
 public class ItemPostDTO {
 
-    private Long memberId;
-
     private String title;
 
     private String content;
