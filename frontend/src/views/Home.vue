@@ -21,8 +21,9 @@
 
     <q-page-container>
 <!--      <router-view />-->
-      <to-do-input @add-to-do="addToDo" />
-      <to-do-list :todos="todos" />
+      <item-input-page :item-add-pop-up="itemAddPopUp" />
+      <to-do-input @click-add-pop-up="clickAddPopUp" />
+      <to-do-list />
     </q-page-container>
   </q-layout>
 </template>
@@ -30,18 +31,19 @@
 <script setup>
 import ToDoInput from '../components/ToDoInput.vue'
 import ToDoList from '../components/ToDoList.vue'
-import { ref } from "vue";
+import ItemInputPage from '../components/ItemInputPage.vue'
+import { ref } from 'vue'
 
-const todos = ref(['공부', '밥', '운동']);
-
-const addToDo = (content) => {
-  todos.value.push(content)
-}
+const itemAddPopUp = ref(false);
 
 const leftDrawerOpen = ref(false)
 
 const toggleLeftDrawer = () => {
   leftDrawerOpen.value = !leftDrawerOpen.value
+}
+
+const clickAddPopUp = () => {
+  itemAddPopUp.value = !itemAddPopUp.value;
 }
 
 </script>

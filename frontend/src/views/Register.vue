@@ -5,6 +5,6 @@
     </q-page-container>
   </q-layout>
 </template>
-<script setup lang="ts">
+<script setup>
 import RegisterPage from "../components/RegisterPage.vue";
 </script>

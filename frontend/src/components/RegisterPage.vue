@@ -14,7 +14,7 @@
             </q-form>
           </q-card-section>
           <q-card-actions class="q-px-md">
-            <q-btn unelevated color="light-blue-7" size="lg" class="full-width" label="register" />
+            <q-btn unelevated color="light-blue-7" size="lg" class="full-width" label="register" @click="register" />
           </q-card-actions>
         </q-card>
       </div>
@@ -23,13 +23,27 @@
 </template>
 
 <script setup>
-import {reactive, ref} from "vue";
+import { ref } from "vue";
+import axios from "axios";
 const email = ref("");
 const password = ref("");
 const name = ref("");
+const register = () => {
+  axios
+      .post('http://localhost:5173/api/v1/member', {
+        email: email.value,
+        password: password.value,
+        name: name.value
+  })
+      .then((res) => {
+        if(res.status === 201) {
+          console.log('register')
+        }
+      })
+}
 </script>
 
-<style>
+<style scoped>
 .q-card {
   width: 400px;
 }

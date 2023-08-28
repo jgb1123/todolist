@@ -13,7 +13,7 @@
             </q-form>
           </q-card-section>
           <q-card-actions class="q-px-md">
-            <q-btn unelevated color="light-blue-7" size="lg" class="full-width" label="Login" />
+            <q-btn unelevated color="light-blue-7" size="lg" class="full-width" label="Login" @click="login"/>
           </q-card-actions>
           <q-card-section class="text-center q-pa-none">
             <p class="text-grey-6">계정이 없으신가요?</p>
@@ -26,8 +26,25 @@
 
 <script setup>
 import {ref} from "vue"
+import axios from "axios"
+import { useCookies } from "vue3-cookies";
+const { cookies } = useCookies()
 const email =  ref("");
 const password = ref("");
+const login = () => {
+  axios
+      .post('http://localhost:5173/api/v1/member/login', {
+        email: email.value,
+        password: password.value
+      })
+      .then((res) => {
+        if(res.status === 200) {
+          cookies.set('accessToken', res.data.accessToken)
+          cookies.set('refreshToken', res.data.refreshToken)
+          console.log('login')
+        }
+      })
+}
 </script>
 
 <style scoped>
