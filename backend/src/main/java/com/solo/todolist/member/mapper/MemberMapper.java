@@ -1,5 +1,6 @@
 package com.solo.todolist.member.mapper;
 
+import com.solo.todolist.member.dto.MemberLoginDTO;
 import com.solo.todolist.member.dto.MemberPatchDTO;
 import com.solo.todolist.member.dto.MemberPostDTO;
 import com.solo.todolist.member.dto.MemberResponseDTO;
@@ -8,17 +9,17 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class MemberMapper {
-    public Member memberPostDTOToMember(MemberPostDTO memberPostDto) {
+    public Member memberPostDTOToMember(MemberPostDTO memberPostDTO) {
         return Member.builder()
-                .email(memberPostDto.getEmail())
-                .password(memberPostDto.getPassword())
-                .name(memberPostDto.getName())
+                .email(memberPostDTO.getEmail())
+                .password(memberPostDTO.getPassword())
+                .name(memberPostDTO.getName())
                 .build();
     }
 
-    public Member memberPatchDTOToMember(MemberPatchDTO memberPatchDto) {
+    public Member memberPatchDTOToMember(MemberPatchDTO memberPatchDTO) {
         return Member.builder()
-                .password(memberPatchDto.getPassword())
+                .password(memberPatchDTO.getPassword())
                 .build();
     }
 

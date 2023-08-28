@@ -1,12 +1,14 @@
 package com.solo.todolist.member.controller;
 
 import com.solo.todolist.dto.SingleResponseDTO;
+import com.solo.todolist.member.dto.MemberLoginDTO;
 import com.solo.todolist.member.dto.MemberPatchDTO;
 import com.solo.todolist.member.dto.MemberPostDTO;
 import com.solo.todolist.member.dto.MemberResponseDTO;
 import com.solo.todolist.member.entity.Member;
 import com.solo.todolist.member.mapper.MemberMapper;
 import com.solo.todolist.member.service.MemberService;
+import com.solo.todolist.security.jwt.Tokens;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,18 +20,21 @@ import org.springframework.web.bind.annotation.*;
 @Validated
 @RequestMapping("/api/v1/member")
 public class MemberController {
+
     private final MemberMapper memberMapper;
     private final MemberService memberService;
 
-    @GetMapping
-    public String test() {
-        return "test";
+    @PostMapping("/login")
+    public ResponseEntity<Tokens> loginMember(@RequestBody MemberLoginDTO memberLoginDTO) {
+        String email = memberLoginDTO.getEmail();
+        String password = memberLoginDTO.getPassword();
+        Tokens tokens = memberService.loginMember(email, password);
+        return new ResponseEntity<>(tokens, HttpStatus.OK);
     }
 
     @PostMapping
-    public ResponseEntity<?> postMember(@RequestBody MemberPostDTO memberPostDto) {
-
-        Member member = memberMapper.memberPostDTOToMember(memberPostDto);
+    public ResponseEntity<?> postMember(@RequestBody MemberPostDTO memberPostDTO) {
+        Member member = memberMapper.memberPostDTOToMember(memberPostDTO);
         Member savedMember = memberService.createMember(member);
         MemberResponseDTO memberResponseDto = memberMapper.memberToMemberResponseDTO(savedMember);
         return new ResponseEntity<>(new SingleResponseDTO<>(memberResponseDto), HttpStatus.CREATED);
@@ -44,11 +49,11 @@ public class MemberController {
 
     @PatchMapping("/{memberId}")
     public ResponseEntity<?> patchMember(@PathVariable Long memberId,
-                                         @RequestBody MemberPatchDTO memberPatchDto) {
-        Member member = memberMapper.memberPatchDTOToMember(memberPatchDto);
+                                         @RequestBody MemberPatchDTO memberPatchDTO) {
+        Member member = memberMapper.memberPatchDTOToMember(memberPatchDTO);
         Member updatedMember = memberService.updateMember(memberId, member);
-        MemberResponseDTO memberResponseDto = memberMapper.memberToMemberResponseDTO(updatedMember);
-        return new ResponseEntity<>(new SingleResponseDTO<>(memberResponseDto), HttpStatus.OK);
+        MemberResponseDTO memberResponseDTO = memberMapper.memberToMemberResponseDTO(updatedMember);
+        return new ResponseEntity<>(new SingleResponseDTO<>(memberResponseDTO), HttpStatus.OK);
     }
 
     @DeleteMapping("/{memberId}")

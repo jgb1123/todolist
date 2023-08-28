@@ -6,7 +6,8 @@ import lombok.Getter;
 public enum ExceptionCode {
     MEMBER_NOT_FOUND(404, "Member not found"),
     MEMBER_EXISTS(409, "Member exists"),
-    ITEM_NOT_FOUND(404, "Item not found");
+    ITEM_NOT_FOUND(404, "Item not found"),
+    ROLE_CANNOT_CHANGE(409, "Role Cannot Change");
 
     private final int status;
 

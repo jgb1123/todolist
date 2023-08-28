@@ -14,19 +14,19 @@ import java.util.stream.Collectors;
 @Data
 public class ItemMapper {
 
-    public Item itemPostDTOToItem(ItemPostDTO itemPostDto) {
+    public Item itemPostDTOToItem(ItemPostDTO itemPostDTO) {
         return Item.builder()
-                .title(itemPostDto.getTitle())
-                .content(itemPostDto.getContent())
-                .targetTime(itemPostDto.getTargetTime())
+                .title(itemPostDTO.getTitle())
+                .content(itemPostDTO.getContent())
+                .targetTime(itemPostDTO.getTargetTime())
                 .build();
     }
 
-    public Item itemPatchDTOToItem(ItemPatchDTO itemPatchDto) {
+    public Item itemPatchDTOToItem(ItemPatchDTO itemPatchDTO) {
         return Item.builder()
-                .title(itemPatchDto.getTitle())
-                .content(itemPatchDto.getContent())
-                .targetTime(itemPatchDto.getTargetTime())
+                .title(itemPatchDTO.getTitle())
+                .content(itemPatchDTO.getContent())
+                .targetTime(itemPatchDTO.getTargetTime())
                 .build();
     }
 

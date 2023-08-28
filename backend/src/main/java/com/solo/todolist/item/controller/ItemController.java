@@ -25,22 +25,23 @@ import java.util.List;
 @Validated
 @RequestMapping("/api/v1/item")
 public class ItemController {
+
     private final ItemMapper itemMapper;
     private final ItemService itemService;
 
     @PostMapping
-    public ResponseEntity<?> postItem(@RequestBody ItemPostDTO itemPostDto) {
-        Item item = itemMapper.itemPostDTOToItem(itemPostDto);
-        Item savedItem = itemService.createItem(item, itemPostDto.getMemberId());
-        ItemResponseDTO itemResponseDto = itemMapper.itemToItemResponseDTO(savedItem);
-        return new ResponseEntity<>(new SingleResponseDTO<>(itemResponseDto), HttpStatus.CREATED);
+    public ResponseEntity<?> postItem(@RequestBody ItemPostDTO itemPostDTO) {
+        Item item = itemMapper.itemPostDTOToItem(itemPostDTO);
+        Item savedItem = itemService.createItem(item, itemPostDTO.getMemberId());
+        ItemResponseDTO itemResponseDTO = itemMapper.itemToItemResponseDTO(savedItem);
+        return new ResponseEntity<>(new SingleResponseDTO<>(itemResponseDTO), HttpStatus.CREATED);
     }
 
     @GetMapping("/{itemId}")
     public ResponseEntity<?> getItem(@PathVariable Long itemId) {
         Item foundItem = itemService.findItem(itemId);
-        ItemResponseDTO itemResponseDto = itemMapper.itemToItemResponseDTO(foundItem);
-        return new ResponseEntity<>(new SingleResponseDTO<>(itemResponseDto), HttpStatus.OK);
+        ItemResponseDTO itemResponseDTO = itemMapper.itemToItemResponseDTO(foundItem);
+        return new ResponseEntity<>(new SingleResponseDTO<>(itemResponseDTO), HttpStatus.OK);
     }
 
     @GetMapping("/member/{memberId}")
@@ -48,17 +49,17 @@ public class ItemController {
                                       @PageableDefault(page = 1, size = 10, sort = "targetTime", direction = Sort.Direction.ASC) Pageable pageable) {
         Page<Item> itemPage = itemService.findItems(memberId, pageable);
         List<Item> items = itemPage.getContent();
-        List<ItemResponseDTO> itemResponseDtos = itemMapper.itemsToItemResponseDTOs(items);
-        return new ResponseEntity<>(new MultiResponseDTO<>(itemResponseDtos, itemPage), HttpStatus.OK);
+        List<ItemResponseDTO> itemResponseDTOs = itemMapper.itemsToItemResponseDTOs(items);
+        return new ResponseEntity<>(new MultiResponseDTO<>(itemResponseDTOs, itemPage), HttpStatus.OK);
     }
 
     @PostMapping("/update/{itemId}")
     public ResponseEntity<?> patchItem(@PathVariable Long itemId,
-                                        @RequestBody ItemPatchDTO itemPatchDto) {
-        Item item = itemMapper.itemPatchDTOToItem(itemPatchDto);
+                                        @RequestBody ItemPatchDTO itemPatchDTO) {
+        Item item = itemMapper.itemPatchDTOToItem(itemPatchDTO);
         Item updatedItem = itemService.updateItem(itemId, item);
-        ItemResponseDTO itemResponseDto = itemMapper.itemToItemResponseDTO(updatedItem);
-        return new ResponseEntity<>(new SingleResponseDTO<>(itemResponseDto), HttpStatus.OK);
+        ItemResponseDTO itemResponseDTO = itemMapper.itemToItemResponseDTO(updatedItem);
+        return new ResponseEntity<>(new SingleResponseDTO<>(itemResponseDTO), HttpStatus.OK);
     }
 
     @PostMapping("/delete/{itemId}")
