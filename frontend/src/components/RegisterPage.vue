@@ -27,6 +27,7 @@ import axios from "axios";
 const email = ref("");
 const password = ref("");
 const name = ref("");
+const router = useRouter();
 const register = () => {
   axios
       .post('http://localhost:5173/api/v1/member', {
@@ -39,6 +40,8 @@ const register = () => {
           console.log('register')
         }
       })
+  alert("회원가입 완료")
+  router.push({name: 'login'})
 }
 </script>
 

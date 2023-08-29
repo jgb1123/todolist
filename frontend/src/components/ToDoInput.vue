@@ -1,12 +1,10 @@
 <template>
   <div id="todoinput">
-    <button type="button" @click="clickAdd">추가</button>
+    <q-btn color="primary" label="할일 추가" style="margin: auto" @click="clickAdd"></q-btn>
   </div>
 </template>
 
 <script setup>
-import axios from "../utils/axios.js";
-
 const emit = defineEmits(['click-add-pop-up']);
 const clickAdd = () => {
   emit('click-add-pop-up')

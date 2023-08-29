@@ -15,25 +15,40 @@
       </q-toolbar>
     </q-header>
 
-    <q-drawer show-if-above v-model="leftDrawerOpen" side="left" bordered>
-      <!-- drawer content -->
+    <q-drawer
+        v-model="leftDrawerOpen"
+        show-if-above
+        :width="200"
+        :breakpoint="500"
+    >
+      <q-scroll-area class="fit">
+        <q-list padding class="menu-list">
+          <q-item active clickable v-ripple @click="clickAddPopUp" >
+            <q-item-section avatar>
+              <q-icon name="add_circle" />
+            </q-item-section>
+
+            <q-item-section>
+              AddToDo
+            </q-item-section>
+          </q-item>
+        </q-list>
+      </q-scroll-area>
     </q-drawer>
 
     <q-page-container>
-<!--      <router-view />-->
-      <item-input-page :item-add-pop-up="itemAddPopUp" />
-      <to-do-input @click-add-pop-up="clickAddPopUp" />
+      <item-input-page :add-pop-up-open="addPopUpOpen" />
+
       <to-do-list />
     </q-page-container>
   </q-layout>
 </template>
 
 <script setup>
-import ToDoInput from '../components/ToDoInput.vue'
 import ToDoList from '../components/ToDoList.vue'
 import ItemInputPage from '../components/ItemInputPage.vue'
 
-const itemAddPopUp = ref(false);
+const addPopUpOpen = ref(false);
 
 const leftDrawerOpen = ref(false)
 
@@ -42,7 +57,7 @@ const toggleLeftDrawer = () => {
 }
 
 const clickAddPopUp = () => {
-  itemAddPopUp.value = !itemAddPopUp.value;
+  addPopUpOpen.value = !addPopUpOpen.value;
 }
 
 </script>

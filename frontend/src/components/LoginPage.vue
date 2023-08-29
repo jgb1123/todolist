@@ -17,6 +17,7 @@
           </q-card-actions>
           <q-card-section class="text-center q-pa-none">
             <p class="text-grey-6">계정이 없으신가요?</p>
+            <q-btn unelevated color="light-blue-7" @click="router.push({name: 'register'})">회원가입</q-btn>
           </q-card-section>
         </q-card>
       </div>
