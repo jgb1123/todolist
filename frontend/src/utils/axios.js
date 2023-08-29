@@ -28,20 +28,27 @@ instance.interceptors.response.use(
         return res
     },
     (error) => {
-        const originalConfig = error.config;
+        const config = error.config
         if(error.response.status === 401) {
-            getRefresh()
-            return instance(originalConfig)
+            // refreshToken으로 토큰 재발급
+            getNewTokens()
+            // 새로운 토큰 headers에 다시 저장 후 재요청
+            const newAccessToken = cookies.get('accessToken')
+            config.headers['Authorization'] = 'Bearer ' + newAccessToken
+            return instance(config)
         }
         return Promise.reject(error)
     })
 
-const getRefresh = (config) => {
+const getNewTokens = () => {
     instance.get('/auth/refresh')
         .then((res) => {
+            const originalConfig = res.config;
             if(res.status === 200) {
-                cookies.set('accessToken', res.data.accessToken)
-                cookies.set('refreshToken', res.data.refreshToken)
+                const accessToken = res.data.accessToken
+                const refreshToken = res.data.refreshToken
+                cookies.set('accessToken', accessToken)
+                cookies.set('refreshToken', refreshToken)
                 console.log('refresh')
             }
         })

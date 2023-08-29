@@ -17,7 +17,7 @@
 
       <q-card-actions>
         <q-btn flat>Edit</q-btn>
-        <q-btn flat>Delete</q-btn>
+        <q-btn flat @Click="deleteItem(item.itemId)">Delete</q-btn>
       </q-card-actions>
     </q-card>
   </div>
@@ -43,6 +43,12 @@ const getItem = () => {
         console.log(items.value)
         }
       })
+}
+
+const deleteItem = (itemId) => {
+  axios
+      .post(`/item/delete/${itemId}`)
+  alert("삭제되었습니다.")
 }
 
 onMounted(getItem)
