@@ -25,14 +25,6 @@ public class MemberController {
     private final MemberMapper memberMapper;
     private final MemberService memberService;
 
-    @PostMapping("/login")
-    public ResponseEntity<Tokens> loginMember(@RequestBody MemberLoginDTO memberLoginDTO) {
-        String email = memberLoginDTO.getEmail();
-        String password = memberLoginDTO.getPassword();
-        Tokens tokens = memberService.loginMember(email, password);
-        return new ResponseEntity<>(tokens, HttpStatus.OK);
-    }
-
     @PostMapping
     public ResponseEntity<?> postMember(@RequestBody MemberPostDTO memberPostDTO) {
         Member member = memberMapper.memberPostDTOToMember(memberPostDTO);
