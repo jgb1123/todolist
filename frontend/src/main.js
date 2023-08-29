@@ -3,7 +3,7 @@ import {Notify, Quasar, SessionStorage} from 'quasar'
 import App from './App.vue'
 import router from './router'
 import axios from 'axios'
-import VueCookies from 'vue-cookies';
+import VueCookies from 'vue3-cookies';
 import 'quasar/dist/quasar.css'
 import '@quasar/extras/material-icons/material-icons.css'
 import '@quasar/extras/fontawesome-v5/fontawesome-v5.css'

@@ -19,35 +19,21 @@
     </q-dialog>
 </template>
 
-<script setup lang="ts">
-import {ref, toRefs} from "vue"
-import axios from "axios";
-import {useCookies} from "vue3-cookies";
-const { cookies } = useCookies();
+<script setup>
+import axios from "../utils/axios.js";
 const title =  ref("");
 const content = ref("");
 const targetTime = ref("");
 
-// const props = defineProps<{
-//   itemAddPopUp: boolean
-// }>();
-const props = withDefaults(defineProps<{
-  itemAddPopUp?: boolean
-}>(), {
-  itemAddPopUp: false
+const props = defineProps({
+  itemAddPopUp: Boolean
 })
-const { itemAddPopUp } = toRefs(props)
-const accessToken = cookies.get('accessToken')
 const add = () => {
   axios
       .post('http://localhost:5173/api/v1/item', {
         targetTime: targetTime.value,
         title: title.value,
         content: content.value
-      }, {
-        headers: {
-          'Authorization': `Bearer ${accessToken}`
-        }
       })
       .then((res) => {
         if(res.status === 200) {

@@ -7,26 +7,22 @@
 </template>
 
 <script setup>
-import axios from 'axios';
-import {useCookies} from "vue3-cookies";
-const { cookies } = useCookies();
-import { ref, onMounted } from 'vue';
-
+import axios from '../utils/axios.js';
 const page = ref(1);
 const records = ref(0);
 const items = ref([]);
-const accessToken = cookies.get('accessToken')
+const router = useRouter();
 const getItem = () => {
-  axios.get('http://localhost:5173/api/v1/item',{
-    headers: {
-      'Authorization': `Bearer ${accessToken}`
-    }
+  axios.get('/item',{
   })
   .then((res) => {
     if(res.status === 200) {
       records.value = res.headers['x-total-count'] || 0;
       items.value = res.data.data;
       console.log(items.value)
+    } else {
+      console.log('router')
+      router.push('/login')
     }
   })
 }

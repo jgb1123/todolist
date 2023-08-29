@@ -25,15 +25,15 @@
 </template>
 
 <script setup>
-import {ref} from "vue"
-import axios from "axios"
+import axios from "../utils/axios.js"
 import { useCookies } from "vue3-cookies";
 const { cookies } = useCookies()
 const email =  ref("");
 const password = ref("");
+const router = useRouter();
 const login = () => {
   axios
-      .post('http://localhost:5173/api/v1/member/login', {
+      .post('/auth/login', {
         email: email.value,
         password: password.value
       })
@@ -42,6 +42,7 @@ const login = () => {
           cookies.set('accessToken', res.data.accessToken)
           cookies.set('refreshToken', res.data.refreshToken)
           console.log('login')
+          router.push({name: 'home'})
         }
       })
 }

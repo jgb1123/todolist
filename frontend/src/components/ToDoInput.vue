@@ -5,6 +5,8 @@
 </template>
 
 <script setup>
+import axios from "../utils/axios.js";
+
 const emit = defineEmits(['click-add-pop-up']);
 const clickAdd = () => {
   emit('click-add-pop-up')
