@@ -42,7 +42,4 @@ public class AuthController {
         Tokens tokens = jwtTokenizer.generateTokens(email, roles);
         return new ResponseEntity<>(tokens, HttpStatus.OK);
     }
-
-
-
 }

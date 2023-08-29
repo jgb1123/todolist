@@ -45,6 +45,7 @@ public class SecurityConfig {
                 .exceptionHandling(c -> c.authenticationEntryPoint(memberAuthenticationEntryPoint).accessDeniedHandler(memberAccessDeniedHandler))
                 .addFilterBefore(new JwtVerificationFilter(jwtTokenizer, customAuthorityUtils), UsernamePasswordAuthenticationFilter.class)
                 .authorizeHttpRequests(authorize -> authorize
+                        .requestMatchers("/api/v1/auth/refresh").anonymous()
                         .requestMatchers("/api/v1/member").permitAll()
                         .requestMatchers("/api/v1/item").permitAll()
                         .anyRequest().permitAll()

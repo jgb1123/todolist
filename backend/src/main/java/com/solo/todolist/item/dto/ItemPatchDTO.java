@@ -18,6 +18,6 @@ public class ItemPatchDTO {
 
     private String content;
 
-    @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm")
     private LocalDateTime targetTime;
 }
