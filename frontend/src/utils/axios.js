@@ -27,11 +27,11 @@ instance.interceptors.response.use(
         console.log('axios response', res);
         return res
     },
-    (error) => {
+    async (error) => {
         const config = error.config
         if(error.response.status === 401) {
-            // refreshToken으로 토큰 재발급
-            getNewTokens()
+            // RefreshToken으로 토큰 재발급
+            await getNewTokens()
             // 새로운 토큰 headers에 다시 저장 후 재요청
             const newAccessToken = cookies.get('accessToken')
             config.headers['Authorization'] = 'Bearer ' + newAccessToken
@@ -40,18 +40,27 @@ instance.interceptors.response.use(
         return Promise.reject(error)
     })
 
-const getNewTokens = () => {
-    instance.get('/auth/refresh')
-        .then((res) => {
-            const originalConfig = res.config;
-            if(res.status === 200) {
-                const accessToken = res.data.accessToken
-                const refreshToken = res.data.refreshToken
-                cookies.set('accessToken', accessToken)
-                cookies.set('refreshToken', refreshToken)
-                console.log('refresh')
-            }
-        })
+const getNewTokens = async () => {
+    // instance.get('/auth/refresh')
+    //     .then((res) => {
+    //         if(res.status === 200) {
+    //             const accessToken = res.data.accessToken
+    //             const refreshToken = res.data.refreshToken
+    //             cookies.set('accessToken', accessToken)
+    //             cookies.set('refreshToken', refreshToken)
+    //             console.log('refresh')
+    //         }
+    //     })
+    // 동기문제
+
+    const res = await instance.get('/auth/refresh');
+    if(res.status === 200) {
+        const accessToken = res.data.accessToken
+        const refreshToken = res.data.refreshToken
+        cookies.set('accessToken', accessToken)
+        cookies.set('refreshToken', refreshToken)
+        console.log('refresh')
+    }
 }
 
 export default instance;

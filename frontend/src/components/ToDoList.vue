@@ -51,7 +51,10 @@ const deleteItem = (itemId) => {
   alert("삭제되었습니다.")
 }
 
-onMounted(getItem)
+onMounted(()=> {
+  getItem();
+  console.log('getItem')
+})
 </script>
 
 <style scoped>
