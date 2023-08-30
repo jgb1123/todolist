@@ -25,23 +25,23 @@ public class MemberController {
     private final MemberMapper memberMapper;
     private final MemberService memberService;
 
-    @PostMapping
-    public ResponseEntity<?> postMember(@RequestBody MemberPostDTO memberPostDTO) {
+    @PostMapping("/create")
+    public ResponseEntity<SingleResponseDTO<MemberResponseDTO>> postMember(@RequestBody MemberPostDTO memberPostDTO) {
         Member member = memberMapper.memberPostDTOToMember(memberPostDTO);
         Member savedMember = memberService.createMember(member);
         MemberResponseDTO memberResponseDto = memberMapper.memberToMemberResponseDTO(savedMember);
         return new ResponseEntity<>(new SingleResponseDTO<>(memberResponseDto), HttpStatus.CREATED);
     }
 
-    @GetMapping()
-    public ResponseEntity<?> getMember(@AuthenticationPrincipal String email) {
+    @GetMapping("/find")
+    public ResponseEntity<SingleResponseDTO<MemberResponseDTO>> getMember(@AuthenticationPrincipal String email) {
         Member foundMember = memberService.findMember(email);
         MemberResponseDTO memberResponseDto = memberMapper.memberToMemberResponseDTO(foundMember);
         return new ResponseEntity<>(new SingleResponseDTO<>(memberResponseDto), HttpStatus.OK);
     }
 
-    @PatchMapping
-    public ResponseEntity<?> patchMember(@AuthenticationPrincipal String email,
+    @PostMapping("/update")
+    public ResponseEntity<SingleResponseDTO<MemberResponseDTO>> patchMember(@AuthenticationPrincipal String email,
                                          @RequestBody MemberPatchDTO memberPatchDTO) {
         Member member = memberMapper.memberPatchDTOToMember(memberPatchDTO);
         Member updatedMember = memberService.updateMember(email, member);
@@ -50,7 +50,7 @@ public class MemberController {
     }
 
     @PostMapping("/delete")
-    public ResponseEntity<?> deleteMember(@AuthenticationPrincipal String email) {
+    public ResponseEntity<HttpStatus> deleteMember(@AuthenticationPrincipal String email) {
         memberService.deleteMember(email);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }

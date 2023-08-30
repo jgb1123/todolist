@@ -30,8 +30,8 @@ public class ItemController {
     private final ItemMapper itemMapper;
     private final ItemService itemService;
 
-    @PostMapping
-    public ResponseEntity<?> postItem(@RequestBody ItemPostDTO itemPostDTO,
+    @PostMapping("/create")
+    public ResponseEntity<SingleResponseDTO<ItemResponseDTO>> postItem(@RequestBody ItemPostDTO itemPostDTO,
                                       @AuthenticationPrincipal String email) {
         Item item = itemMapper.itemPostDTOToItem(itemPostDTO);
         Item savedItem = itemService.createItem(item, email);
@@ -39,15 +39,15 @@ public class ItemController {
         return new ResponseEntity<>(new SingleResponseDTO<>(itemResponseDTO), HttpStatus.CREATED);
     }
 
-    @GetMapping("/{itemId}")
-    public ResponseEntity<?> getItem(@PathVariable Long itemId) {
+    @GetMapping("/find/{itemId}")
+    public ResponseEntity<SingleResponseDTO<ItemResponseDTO>> getItem(@PathVariable Long itemId) {
         Item foundItem = itemService.findItem(itemId);
         ItemResponseDTO itemResponseDTO = itemMapper.itemToItemResponseDTO(foundItem);
         return new ResponseEntity<>(new SingleResponseDTO<>(itemResponseDTO), HttpStatus.OK);
     }
 
     @PostMapping("/update/{itemId}")
-    public ResponseEntity<?> patchItem(@PathVariable Long itemId,
+    public ResponseEntity<SingleResponseDTO<ItemResponseDTO>> patchItem(@PathVariable Long itemId,
                                         @RequestBody ItemPatchDTO itemPatchDTO) {
         Item item = itemMapper.itemPatchDTOToItem(itemPatchDTO);
         Item updatedItem = itemService.updateItem(itemId, item);
@@ -55,8 +55,8 @@ public class ItemController {
         return new ResponseEntity<>(new SingleResponseDTO<>(itemResponseDTO), HttpStatus.OK);
     }
 
-    @GetMapping
-    public ResponseEntity<?> getItems(@AuthenticationPrincipal String email,
+    @GetMapping("/find")
+    public ResponseEntity<MultiResponseDTO<ItemResponseDTO>> getItems(@AuthenticationPrincipal String email,
                                       @PageableDefault(page = 1, size = 10, sort = "targetTime", direction = Sort.Direction.ASC) Pageable pageable) {
         Page<Item> itemPage = itemService.findItems(email, pageable);
         List<Item> items = itemPage.getContent();
@@ -65,7 +65,7 @@ public class ItemController {
     }
 
     @PostMapping("/delete/{itemId}")
-    public ResponseEntity<?> deleteItem(@PathVariable Long itemId) {
+    public ResponseEntity<HttpStatus> deleteItem(@PathVariable Long itemId) {
         itemService.deleteItem(itemId);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
