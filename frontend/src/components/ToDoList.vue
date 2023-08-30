@@ -26,34 +26,40 @@
 <script setup>
 import axios from '../utils/axios.js';
 import dayjs from "dayjs";
-import { useCookies } from "vue3-cookies";
 
-const { cookies } = useCookies();
+const router = useRouter();
 const page = ref(1);
 const records = ref(0);
 const items = ref([]);
 
-const getItem = () => {
-  axios
-      .get('/item')
-      .then((res) => {
-        if(res.status === 200) {
-        records.value = res.headers['x-total-count'] || 0;
-        items.value = res.data.data;
-        console.log(items.value)
-        }
-      })
+const getItem = async () => {
+  const res = await axios.get('/item/find')
+
+  if(res.status === 200) {
+    records.value = res.headers['x-total-count'] || 0;
+    items.value = res.data.data;
+    console.log('get items')
+  }
 }
 
-const deleteItem = (itemId) => {
-  axios
-      .post(`/item/delete/${itemId}`)
-  alert("삭제되었습니다.")
+const deleteItem = async (itemId) => {
+  const res = await axios.post(`/item/delete/${itemId}`)
+  if(res.status === 204){
+    alert("삭제되었습니다.")
+    router.go(0)
+  }
 }
 
-onMounted(()=> {
+defineExpose({getItem})
+
+const editItem = async (itemId) => {
+  const res = await axios.post(`/item/update/${itemId}`, {
+
+  })
+}
+
+onMounted( ()=> {
   getItem();
-  console.log('getItem')
 })
 </script>
 

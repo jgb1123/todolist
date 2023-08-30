@@ -1,20 +1,18 @@
 import axios from "axios";
 import {useCookies} from "vue3-cookies";
+import router from "../router/index.js";
 const { cookies } = useCookies();
-const accessToken = cookies.get('accessToken')
-const refreshToken = cookies.get('refreshToken')
-
 const instance = axios.create({
     baseURL: 'http://localhost:5173/api/v1',
     timeout: 1000,
-    headers: {
-        'Authorization': `Bearer ${accessToken}`,
-        'RefreshToken': `${refreshToken}`
-    }
 })
 
 instance.interceptors.request.use(
     (config) => {
+        const accessToken = cookies.get('accessToken')
+        const refreshToken = cookies.get('refreshToken')
+        config.headers['Authorization'] = 'Bearer ' + accessToken
+        config.headers['RefreshToken'] = refreshToken
         return config
     },
     (error) => {
@@ -31,35 +29,27 @@ instance.interceptors.response.use(
         const config = error.config
         if(error.response.status === 401) {
             // RefreshToken으로 토큰 재발급
-            await getNewTokens()
-            // 새로운 토큰 headers에 다시 저장 후 재요청
-            const newAccessToken = cookies.get('accessToken')
-            config.headers['Authorization'] = 'Bearer ' + newAccessToken
-            return instance(config)
+            await getNewTokensAndAgainRequest(config)
+            router.go(0)
         }
         return Promise.reject(error)
     })
 
-const getNewTokens = async () => {
-    // instance.get('/auth/refresh')
-    //     .then((res) => {
-    //         if(res.status === 200) {
-    //             const accessToken = res.data.accessToken
-    //             const refreshToken = res.data.refreshToken
-    //             cookies.set('accessToken', accessToken)
-    //             cookies.set('refreshToken', refreshToken)
-    //             console.log('refresh')
-    //         }
-    //     })
-    // 동기문제
-
-    const res = await instance.get('/auth/refresh');
-    if(res.status === 200) {
-        const accessToken = res.data.accessToken
-        const refreshToken = res.data.refreshToken
-        cookies.set('accessToken', accessToken)
-        cookies.set('refreshToken', refreshToken)
-        console.log('refresh')
+const getNewTokensAndAgainRequest = async (config) => {
+    try {
+        const res = await instance.get('/auth/refresh');
+        if (res.status === 200) {
+            // 쿠키에 새로 발급받은 토큰 저장
+            const accessToken = res.data.accessToken
+            const refreshToken = res.data.refreshToken
+            cookies.set('accessToken', accessToken)
+            cookies.set('refreshToken', refreshToken)
+            console.log('refresh')
+            // return await instance(config)
+        }
+    } catch(err) {
+        alert("다시 로그인해주세요.")
+        await router.push({name: 'login'})
     }
 }
 

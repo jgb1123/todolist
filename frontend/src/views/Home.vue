@@ -23,11 +23,10 @@
     >
       <q-scroll-area class="fit">
         <q-list padding class="menu-list">
-          <q-item active clickable v-ripple @click="clickAddPopUp" >
+          <q-item active clickable v-ripple @click="changeAddPopUp" >
             <q-item-section avatar>
               <q-icon name="add_circle" />
             </q-item-section>
-
             <q-item-section>
               AddToDo
             </q-item-section>
@@ -37,9 +36,8 @@
     </q-drawer>
 
     <q-page-container>
-      <item-input-page :add-pop-up-open="addPopUpOpen" />
-
-      <to-do-list />
+      <item-input-page v-model="addPopUpOpen" @change-add-pop-up="changeAddPopUp" @refresh-todo-list="refreshTodoList"/>
+      <to-do-list ref="todoRef"/>
     </q-page-container>
   </q-layout>
 </template>
@@ -50,14 +48,20 @@ import ItemInputPage from '../components/ItemInputPage.vue'
 
 const addPopUpOpen = ref(false);
 
-const leftDrawerOpen = ref(false)
+const leftDrawerOpen = ref(false);
+
+const todoRef = ref();
 
 const toggleLeftDrawer = () => {
   leftDrawerOpen.value = !leftDrawerOpen.value
 }
 
-const clickAddPopUp = () => {
+const changeAddPopUp = () => {
   addPopUpOpen.value = !addPopUpOpen.value;
+}
+
+const refreshTodoList = () => {
+  todoRef.value.getItem();
 }
 
 </script>

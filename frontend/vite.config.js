@@ -12,9 +12,6 @@ export default defineConfig({
     AutoImport({
       imports: ['vue', 'vue-router']
     })],
-  build: {
-    outDir: "../backend/src/main/resources/static"
-  },
   server: {
     proxy: {
       "/api": "http://localhost:8081"

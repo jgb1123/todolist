@@ -23,25 +23,24 @@
 </template>
 
 <script setup>
-import axios from "axios";
+import axios from "../utils/axios.js";
 const email = ref("");
 const password = ref("");
 const name = ref("");
 const router = useRouter();
-const register = () => {
-  axios
-      .post('http://localhost:5173/api/v1/member', {
-        email: email.value,
-        password: password.value,
-        name: name.value
-  })
-      .then((res) => {
-        if(res.status === 201) {
-          console.log('register')
-        }
-      })
-  alert("회원가입 완료")
-  router.push({name: 'login'})
+
+const register = async () => {
+  const res = await axios.post('/member/create', {
+    email: email.value,
+    password: password.value,
+    name: name.value
+  });
+
+  if(res.status === 201) {
+    console.log('register')
+    alert('회원가입 완료')
+    await router.push({name: 'login'})
+  }
 }
 </script>
 

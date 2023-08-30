@@ -32,20 +32,19 @@ const { cookies } = useCookies()
 const email =  ref("");
 const password = ref("");
 const router = useRouter();
-const login = () => {
-  axios
-      .post('/auth/login', {
-        email: email.value,
-        password: password.value
-      })
-      .then((res) => {
-        if(res.status === 200) {
-          cookies.set('accessToken', res.data.accessToken)
-          cookies.set('refreshToken', res.data.refreshToken)
-          console.log('login')
-          router.push({name: 'home'})
-        }
-      })
+const login = async () => {
+  const res = await axios.post('/auth/login', {
+    email: email.value,
+    password: password.value
+  });
+
+  if (res.status === 200) {
+    cookies.set('accessToken', res.data.accessToken)
+    cookies.set('refreshToken', res.data.refreshToken)
+    console.log(cookies.get('accessToken'))
+    console.log('login')
+    await router.push({name: 'home'})
+  }
 }
 </script>
 
