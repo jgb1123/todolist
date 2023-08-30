@@ -30,11 +30,9 @@ public class JwtVerificationFilter extends OncePerRequestFilter {
         try {
             Map<String, Object> claims = verifyJws(request);
             setAuthenticationToContext(claims);
-        } catch (SignatureException | ExpiredJwtException se) {
+        } catch (Exception e) {
             response.setStatus(response.SC_UNAUTHORIZED);
             return;
-        } catch (Exception e) {
-            request.setAttribute("exception", e);
         }
 
         filterChain.doFilter(request, response);
