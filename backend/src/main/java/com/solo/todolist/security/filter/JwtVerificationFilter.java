@@ -25,7 +25,7 @@ import java.util.Map;
 public class JwtVerificationFilter extends OncePerRequestFilter {
     private final JwtTokenizer jwtTokenizer;
     private final CustomAuthorityUtils customAuthorityUtils;
-    private static final List<String> excludeUrls = List.of("/api/v1/auth/refresh");
+    private static final List<String> excludeUrls = List.of("/api/v1/auth/refresh", "/api/v1/auth/login");
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
