@@ -46,17 +46,11 @@ const deleteItem = async (itemId) => {
   const res = await axios.post(`/item/delete/${itemId}`)
   if(res.status === 204){
     alert("삭제되었습니다.")
-    router.go(0)
+    await getItem()
   }
 }
 
 defineExpose({getItem})
-
-const editItem = async (itemId) => {
-  const res = await axios.post(`/item/update/${itemId}`, {
-
-  })
-}
 
 onMounted( ()=> {
   getItem();

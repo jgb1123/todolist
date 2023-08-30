@@ -12,6 +12,9 @@
           </q-avatar>
           To Do
         </q-toolbar-title>
+        <q-btn class="logout-button" @click="logout">
+          <q-icon name="logout"></q-icon>
+        </q-btn>
       </q-toolbar>
     </q-header>
 
@@ -45,6 +48,11 @@
 <script setup>
 import ToDoList from '../components/ToDoList.vue'
 import ItemInputPage from '../components/ItemInputPage.vue'
+import {useCookies} from "vue3-cookies";
+import router from "../router/index.js";
+
+const {cookies} = useCookies();
+
 
 const addPopUpOpen = ref(false);
 
@@ -62,6 +70,14 @@ const changeAddPopUp = () => {
 
 const refreshTodoList = () => {
   todoRef.value.getItem();
+}
+
+const logout = () => {
+  console.log('logout')
+  cookies.remove('accessToken')
+  cookies.remove('refreshToken')
+  alert('로그아웃 되었습니다.')
+  router.push({name: 'login'})
 }
 
 </script>
