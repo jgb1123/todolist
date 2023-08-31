@@ -33,15 +33,15 @@
 </template>
 
 <script setup>
+const props = defineProps(['nowItem'])
+const emit = defineEmits(['refresh-todo-list', 'change-edit-pop-up'])
 const title = ref("");
 const content = ref("");
 const targetTime = ref("");
-const props = defineProps(['itemId'])
-const emit = defineEmits(['refresh-todo-list', 'change-edit-pop-up'])
 
 import axios from "../utils/axios.js";
 const edit = async () => {
-  const res = await axios.post(`/item/update/${props.itemId}`, {
+  const res = await axios.post(`/item/update/${props.nowItem.itemId}`, {
     targetTime: targetTime.value,
     title: title.value,
     content: content.value

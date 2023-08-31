@@ -52,6 +52,9 @@ const add = async () => {
     alert('일정이 등록되었습니다.')
     await emit('change-add-pop-up')
     await emit('refresh-todo-list')
+    title.value = "";
+    content.value ="";
+    targetTime.value ="";
   }
 }
 </script>

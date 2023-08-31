@@ -16,7 +16,7 @@
       <q-separator dark/>
 
       <q-card-actions>
-        <q-btn flat @click="editItem(item.itemId)">Edit</q-btn>
+        <q-btn flat @click="editItem(item)">Edit</q-btn>
         <q-btn flat @click="deleteItem(item.itemId)">Delete</q-btn>
       </q-card-actions>
     </q-card>
@@ -28,7 +28,7 @@ import axios from '../utils/axios.js';
 import dayjs from "dayjs";
 
 const router = useRouter();
-const page = ref(1);
+// const page = ref(1);
 const records = ref(0);
 const items = ref([]);
 const emit = defineEmits(['change-edit-pop-up'])
@@ -39,7 +39,6 @@ const getItem = async () => {
   if(res.status === 200) {
     records.value = res.headers['x-total-count'] || 0;
     items.value = res.data.data;
-    console.log('get items')
   }
 }
 
@@ -51,9 +50,8 @@ const deleteItem = async (itemId) => {
   }
 }
 
-const editItem = async (id) => {
-  console.log(id)
-  await emit(`change-edit-pop-up`, id)
+const editItem = async (item) => {
+  await emit(`change-edit-pop-up`, item)
 }
 
 defineExpose({getItem})

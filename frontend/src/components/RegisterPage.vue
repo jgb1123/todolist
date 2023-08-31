@@ -7,15 +7,18 @@
       <div class="row">
         <q-card square bordered class="q-pa-lg shadow-1">
           <q-card-section>
-            <q-form class="q-gutter-md">
-              <q-input square filled v-model="email" type="email" label="email" />
-              <q-input square filled v-model="password" type="password" label="password" />
-              <q-input square filled v-model="name" label="name" />
+            <q-form ref="registerForm" class="q-gutter-md" @submit="register" >
+              <q-input :rules="[email_rules]"
+                       square filled v-model="email" type="email" label="email" />
+              <q-input :rules="[password_rules]"
+                       square filled v-model="password" type="password" label="password" />
+              <q-input :rules="[name_rules]"
+                       square filled v-model="name" label="name" />
+              <q-card-actions class="q-px-md">
+                <q-btn unelevated color="light-blue-7" type="submit" size="lg" class="full-width" label="register" />
+              </q-card-actions>
             </q-form>
           </q-card-section>
-          <q-card-actions class="q-px-md">
-            <q-btn unelevated color="light-blue-7" size="lg" class="full-width" label="register" @click="register" />
-          </q-card-actions>
         </q-card>
       </div>
     </div>
@@ -42,6 +45,39 @@ const register = async () => {
     await router.push({name: 'login'})
   }
 }
+
+const email_rules = (val) => {
+  if(!val) {
+    return '이메일을 입력해주세요.'
+  }
+  const kor = val.match(/[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/g);
+  if(kor) {
+    return '한글은 입력할 수 없습니다.'
+  }
+  const form = val.match(/^[a-zA-Z0-9]+@[a-zA-Z0-9]+\.[a-zA-Z0-9]+$/);
+  if(!form) {
+    return '알맞은 이메일 형식을 입력해주세요.'
+  }
+}
+
+const password_rules = (val) => {
+  const len = val.length
+  if(len < 8 || len > 20) {
+    return '비밀번호는 8자이상 20자 이하여야 합니다.'
+  }
+  const a = val.match(/^[a-zA-z0-9]+$/);
+  if(!a) {
+    return '영문, 숫자 조합이어야 합니다.'
+  }
+}
+
+const name_rules = (val) => {
+  const kor = val.match(/[가-힣]/g);
+  if(!kor) {
+    return '이름은 한글로만 입력되어야 합니다.'
+  }
+}
+
 </script>
 
 <style scoped>

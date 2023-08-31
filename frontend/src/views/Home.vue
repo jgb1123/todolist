@@ -40,7 +40,7 @@
 
     <q-page-container>
       <item-input-page v-model="addPopUpOpen" @change-add-pop-up="changeAddPopUp" @refresh-todo-list="refreshTodoList"/>
-      <item-edit-page v-model="editPopUpOpen" @change-edit-pop-up="changeEditPopUp" @refresh-todo-list="refreshTodoList" :itemId="itemId"/>
+      <item-edit-page v-model="editPopUpOpen" @change-edit-pop-up="changeEditPopUp" @refresh-todo-list="refreshTodoList" :nowItem="nowItem"/>
       <to-do-list ref="todoRef" @change-edit-pop-up="changeEditPopUp"/>
     </q-page-container>
   </q-layout>
@@ -61,7 +61,7 @@ const editPopUpOpen = ref(false);
 
 const leftDrawerOpen = ref(false);
 
-const itemId = ref("");
+let nowItem = ref();
 
 const todoRef = ref();
 
@@ -73,9 +73,9 @@ const changeAddPopUp = () => {
   addPopUpOpen.value = !addPopUpOpen.value;
 }
 
-const changeEditPopUp = (id) => {
+const changeEditPopUp = (item) => {
   editPopUpOpen.value = !editPopUpOpen.value;
-  itemId.value = id
+  nowItem.value = item
 }
 
 const refreshTodoList = () => {
