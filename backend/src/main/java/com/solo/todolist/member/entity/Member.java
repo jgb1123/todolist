@@ -31,7 +31,7 @@ public class Member implements UserDetails {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "MEMBER_SEQ_GENERATOR")
     private Long memberId;
 
-    @Column
+    @Column(unique = true)
     private String email;
 
     @Column
