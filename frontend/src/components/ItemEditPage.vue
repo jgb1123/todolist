@@ -1,14 +1,14 @@
 <template>
   <q-dialog>
-    <q-card square bordered class="q-pa-lg shadow-1" style="width: 1100px; max-width: 90vw;">
+    <q-card square bordered class="my-card q-pa-lg shadow-1" style="width: 1100px; max-width: 90vw;">
       <q-card-section horizontal>
         <q-card-section style="width: 310px">
-          <h4>일정 등록</h4>
+          <h4>일정 변경</h4>
           <q-input square filled v-model="title" type="email" label="title" style="width: 260px" />
           <q-separator />
           <q-input square filled v-model="content" type="textarea" label="content" style="width: 260px" />
           <q-card-actions class="q-px-md">
-            <q-btn unelevated color="light-blue-7" size="lg" class="full-width" label="추가" @click="add" />
+            <q-btn unelevated color="light-blue-7" size="lg" class="full-width" label="수정" @click="edit" />
           </q-card-actions>
         </q-card-section>
         <q-separator vertical />
@@ -33,31 +33,23 @@
 </template>
 
 <script setup>
-import axios from "../utils/axios.js";
-const title =  ref("");
+const title = ref("");
 const content = ref("");
 const targetTime = ref("");
-const router = useRouter();
-const emit = defineEmits(['change-add-pop-up', 'refresh-todo-list'])
+const props = defineProps(['itemId'])
+const emit = defineEmits(['refresh-todo-list', 'change-edit-pop-up'])
 
-const add = async () => {
-  const res = await axios.post('/item/create', {
+import axios from "../utils/axios.js";
+const edit = async () => {
+  const res = await axios.post(`/item/update/${props.itemId}`, {
     targetTime: targetTime.value,
     title: title.value,
     content: content.value
   })
-
-  if(res.status === 201) {
-    console.log('item add')
-    alert('일정이 등록되었습니다.')
-    await emit('change-add-pop-up')
+  if(res.status === 200) {
+    await alert('일정이 변경되었습니다.')
+    await emit('change-edit-pop-up', 0)
     await emit('refresh-todo-list')
   }
 }
 </script>
-
-<style scoped>
-.q-card {
-  width: 400px;
-}
-</style>

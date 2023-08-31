@@ -40,7 +40,8 @@
 
     <q-page-container>
       <item-input-page v-model="addPopUpOpen" @change-add-pop-up="changeAddPopUp" @refresh-todo-list="refreshTodoList"/>
-      <to-do-list ref="todoRef"/>
+      <item-edit-page v-model="editPopUpOpen" @change-edit-pop-up="changeEditPopUp" @refresh-todo-list="refreshTodoList" :itemId="itemId"/>
+      <to-do-list ref="todoRef" @change-edit-pop-up="changeEditPopUp"/>
     </q-page-container>
   </q-layout>
 </template>
@@ -50,13 +51,17 @@ import ToDoList from '../components/ToDoList.vue'
 import ItemInputPage from '../components/ItemInputPage.vue'
 import {useCookies} from "vue3-cookies";
 import router from "../router/index.js";
+import ItemEditPage from "../components/ItemEditPage.vue";
 
 const {cookies} = useCookies();
 
-
 const addPopUpOpen = ref(false);
 
+const editPopUpOpen = ref(false);
+
 const leftDrawerOpen = ref(false);
+
+const itemId = ref("");
 
 const todoRef = ref();
 
@@ -66,6 +71,11 @@ const toggleLeftDrawer = () => {
 
 const changeAddPopUp = () => {
   addPopUpOpen.value = !addPopUpOpen.value;
+}
+
+const changeEditPopUp = (id) => {
+  editPopUpOpen.value = !editPopUpOpen.value;
+  itemId.value = id
 }
 
 const refreshTodoList = () => {

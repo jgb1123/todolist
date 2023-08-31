@@ -8,7 +8,7 @@
         <q-separator dark/>
         <div class="q-ma-md">
           <q-scroll-area style="height: 50px; max-width: 400px; word-break: break-all">
-              <div class="q-py-xs">{{ item.content }}</div>
+            <div class="q-py-xs">{{ item.content }}</div>
           </q-scroll-area>
         </div>
       </q-card-section>
@@ -16,8 +16,8 @@
       <q-separator dark/>
 
       <q-card-actions>
-        <q-btn flat>Edit</q-btn>
-        <q-btn flat @Click="deleteItem(item.itemId)">Delete</q-btn>
+        <q-btn flat @click="editItem(item.itemId)">Edit</q-btn>
+        <q-btn flat @click="deleteItem(item.itemId)">Delete</q-btn>
       </q-card-actions>
     </q-card>
   </div>
@@ -31,6 +31,7 @@ const router = useRouter();
 const page = ref(1);
 const records = ref(0);
 const items = ref([]);
+const emit = defineEmits(['change-edit-pop-up'])
 
 const getItem = async () => {
   const res = await axios.get('/item/find')
@@ -48,6 +49,11 @@ const deleteItem = async (itemId) => {
     alert("삭제되었습니다.")
     await getItem()
   }
+}
+
+const editItem = async (id) => {
+  console.log(id)
+  await emit(`change-edit-pop-up`, id)
 }
 
 defineExpose({getItem})
