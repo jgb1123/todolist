@@ -7,9 +7,6 @@
           <q-icon name="mdi-menu" size="20px" />
         </q-btn>
         <q-toolbar-title>
-          <q-avatar>
-            <img src="../assets/vue.svg">
-          </q-avatar>
           To Do
         </q-toolbar-title>
         <q-btn class="logout-button" @click="logout">
@@ -55,6 +52,8 @@ import ItemEditPage from "../components/ItemEditPage.vue";
 
 const {cookies} = useCookies();
 
+const $q = useQuasar();
+
 const addPopUpOpen = ref(false);
 
 const editPopUpOpen = ref(false);
@@ -82,14 +81,22 @@ const refreshTodoList = () => {
   todoRef.value.getItem();
 }
 
-const logout = () => {
+const logout = async () => {
   console.log('logout')
   cookies.remove('accessToken')
   cookies.remove('refreshToken')
-  alert('로그아웃 되었습니다.')
-  router.push({name: 'login'})
+  await logoutAlert()
 }
 
+const logoutAlert = () => {
+  $q.dialog({
+    message: '로그아웃 되었습니다.'
+  }).onOk(() => {
+    router.push({name: 'login'})
+  }).onDismiss(() => {
+    router.push({name: 'login'})
+  })
+}
 </script>
 
 <style>

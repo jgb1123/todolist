@@ -9,11 +9,11 @@
           <q-card-section>
             <q-form ref="registerForm" class="q-gutter-md" @submit="register" >
               <q-input :rules="[email_rules]"
-                       square filled v-model="email" type="email" label="email" />
+                       square filled v-model="data.email" type="email" label="email" />
               <q-input :rules="[password_rules]"
-                       square filled v-model="password" type="password" label="password" />
+                       square filled v-model="data.password" type="password" label="password" />
               <q-input :rules="[name_rules]"
-                       square filled v-model="name" label="name" />
+                       square filled v-model="data.name" label="name" />
               <q-card-actions class="q-px-md">
                 <q-btn unelevated color="light-blue-7" type="submit" size="lg" class="full-width" label="register" />
               </q-card-actions>
@@ -27,16 +27,18 @@
 
 <script setup>
 import axios from "../utils/axios.js";
-const email = ref("");
-const password = ref("");
-const name = ref("");
+const data = ref({
+  email: "",
+  password: "",
+  name: ""
+})
 const router = useRouter();
 
 const register = async () => {
   const res = await axios.post('/member/create', {
-    email: email.value,
-    password: password.value,
-    name: name.value
+    email: data.value.email,
+    password: data.value.password,
+    name: data.value.name
   });
 
   if(res.status === 201) {

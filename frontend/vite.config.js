@@ -10,7 +10,7 @@ export default defineConfig({
       template: { transformAssetUrls }
     }),
     AutoImport({
-      imports: ['vue', 'vue-router']
+      imports: ['vue', 'vue-router', 'quasar']
     })],
   server: {
     proxy: {

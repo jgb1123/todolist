@@ -15,9 +15,9 @@
 
       <q-separator dark/>
 
-      <q-card-actions>
-        <q-btn flat @click="editItem(item)">Edit</q-btn>
-        <q-btn flat @click="deleteItem(item.itemId)">Delete</q-btn>
+      <q-card-actions align="right">
+        <q-btn icon="mode_edit" color="primary" @click="editItem(item)" />
+        <q-btn icon="delete" color="primary" @click="confirm(item.itemId)" />
       </q-card-actions>
     </q-card>
   </div>
@@ -28,6 +28,7 @@ import axios from '../utils/axios.js';
 import dayjs from "dayjs";
 
 const router = useRouter();
+const $q = useQuasar();
 // const page = ref(1);
 const records = ref(0);
 const items = ref([]);
@@ -42,12 +43,38 @@ const getItem = async () => {
   }
 }
 
+const confirm = (itemId) => {
+  $q.dialog({
+    message: '해당 일정을 정말 삭제하시겠습니까?',
+    ok: {
+
+      push: true,
+      color: 'negative'
+    },
+    cancel: true,
+    persistent: true
+  }).onOk(() => {
+    deleteItem(itemId)
+  }).onCancel(() => {
+  }).onDismiss(() => {
+  })
+}
+
 const deleteItem = async (itemId) => {
   const res = await axios.post(`/item/delete/${itemId}`)
   if(res.status === 204){
-    alert("삭제되었습니다.")
+    alertDelete()
     await getItem()
   }
+}
+
+const alertDelete = () => {
+  $q.dialog({
+    message: '삭제되었습니다.'
+  }).onOk(() => {
+  }).onCancel(() => {
+  }).onDismiss(() => {
+  })
 }
 
 const editItem = async (item) => {
@@ -59,6 +86,7 @@ defineExpose({getItem})
 onMounted( ()=> {
   getItem();
 })
+
 </script>
 
 <style scoped>

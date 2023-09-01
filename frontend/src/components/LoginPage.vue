@@ -9,9 +9,9 @@
           <q-card-section>
             <q-form ref="loginForm" class="q-gutter-md" @submit="login">
               <q-input :rules="[email_rules]"
-                       square filled v-model="email" type="email" label="email" @keyup.enter="login"/>
+                       square filled v-model="data.email" type="email" label="email" @keyup.enter="login"/>
               <q-input :rules="[password_rules]"
-                       square filled v-model="password" type="password" label="password" @keyup.enter="login" />
+                       square filled v-model="data.password" type="password" label="password" @keyup.enter="login" />
               <q-card-actions class="q-px-md">
                 <q-btn unelevated color="light-blue-7" type="submit" size="lg" class="full-width" label="Login"/>
               </q-card-actions>
@@ -30,14 +30,17 @@
 <script setup>
 import axios from "../utils/axios.js"
 import { useCookies } from "vue3-cookies";
+
 const { cookies } = useCookies()
-const email =  ref("");
-const password = ref("");
+const data = ref({
+  email: "",
+  password: ""
+})
 const router = useRouter();
 const login = async () => {
   const res = await axios.post('/auth/login', {
-    email: email.value,
-    password: password.value
+    email: data.value.email,
+    password: data.value.password
   });
 
   if (res.status === 200) {

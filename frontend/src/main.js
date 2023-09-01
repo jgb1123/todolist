@@ -1,5 +1,5 @@
 import { createApp } from 'vue'
-import {Notify, Quasar, SessionStorage} from 'quasar'
+import {Notify, Quasar, SessionStorage, Dialog} from 'quasar'
 import App from './App.vue'
 import router from './router'
 import axios from 'axios'
@@ -13,7 +13,8 @@ const app = createApp(App)
 app.use(Quasar, {
     plugins: {
         SessionStorage,
-        Notify
+        Notify,
+        Dialog
     }
 })
 app.use(router)
