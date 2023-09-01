@@ -1,10 +1,14 @@
 package com.solo.todolist.exception;
 
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.BindingResult;
 
 import jakarta.validation.ConstraintViolation;
+
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -16,13 +20,13 @@ public class ErrorResponse {
     private List<FieldError> fieldErrors;
     private List<ConstraintViolationError> violationErrors;
 
-    private ErrorResponse(int status, String message){
+    private ErrorResponse(int status, String message) {
         this.status = status;
         this.message = message;
     }
 
     private ErrorResponse(final List<FieldError> fieldErrors,
-                          final List<ConstraintViolationError> violationErrors){
+                          final List<ConstraintViolationError> violationErrors) {
         this.fieldErrors = fieldErrors;
         this.violationErrors = violationErrors;
     }
@@ -48,18 +52,13 @@ public class ErrorResponse {
     }
 
     @Getter
+    @RequiredArgsConstructor
     public static class FieldError {
         private final String field;
         private final Object rejectedValue;
         private final String reason;
 
-        private FieldError(String field, Object rejectedValue, String reason) {
-            this.field = field;
-            this.rejectedValue = rejectedValue;
-            this.reason = reason;
-        }
-
-        public static List<FieldError> of(BindingResult bindingResult){
+        public static List<FieldError> of(BindingResult bindingResult) {
             final List<org.springframework.validation.FieldError> fieldErrors = bindingResult.getFieldErrors();
             return fieldErrors.stream()
                     .map(error -> new FieldError(
@@ -72,18 +71,13 @@ public class ErrorResponse {
     }
 
     @Getter
-    public static class ConstraintViolationError{
+    @RequiredArgsConstructor
+    public static class ConstraintViolationError {
         private final String propertyPath;
         private final Object rejectedValue;
         private final String reason;
 
-        public ConstraintViolationError(String propertyPath, Object rejectedValue, String reason) {
-            this.propertyPath = propertyPath;
-            this.rejectedValue = rejectedValue;
-            this.reason = reason;
-        }
-
-        public static List<ConstraintViolationError> of(Set<ConstraintViolation<?>> constraintViolations){
+        public static List<ConstraintViolationError> of(Set<ConstraintViolation<?>> constraintViolations) {
             return constraintViolations.stream()
                     .map(constraintViolation -> new ConstraintViolationError(
                             constraintViolation.getPropertyPath().toString(),

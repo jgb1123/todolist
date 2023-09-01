@@ -1,5 +1,7 @@
 package com.solo.todolist.item.dto;
 
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -14,10 +16,12 @@ import java.time.LocalDateTime;
 @Builder
 public class ItemPostDTO {
 
+    @NotBlank
     private String title;
 
     private String content;
 
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm")
     private LocalDateTime targetTime;
+
 }

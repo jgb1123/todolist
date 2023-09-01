@@ -6,6 +6,7 @@ import com.solo.todolist.security.handler.MemberAuthenticationEntryPoint;
 import com.solo.todolist.security.jwt.JwtTokenizer;
 import com.solo.todolist.security.utils.CustomAuthorityUtils;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
@@ -65,7 +66,8 @@ public class SecurityConfig {
 
     public class CustomFilterConfigurer extends AbstractHttpConfigurer<CustomFilterConfigurer, HttpSecurity> {
         @Override
-        public void configure(HttpSecurity builder) throws Exception {
+        public void configure(HttpSecurity httpSecurity) throws Exception {
+//            this.postProcess()
             JwtVerificationFilter jwtVerificationFilter = new JwtVerificationFilter(jwtTokenizer, customAuthorityUtils);
         }
     }
