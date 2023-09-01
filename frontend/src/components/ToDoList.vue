@@ -45,18 +45,19 @@ const getItem = async () => {
 
 const confirm = (itemId) => {
   $q.dialog({
-    message: '해당 일정을 정말 삭제하시겠습니까?',
     ok: {
-
-      push: true,
       color: 'negative'
     },
     cancel: true,
-    persistent: true
+    message: '해당 일정을 정말 삭제하시겠습니까?',
   }).onOk(() => {
     deleteItem(itemId)
-  }).onCancel(() => {
-  }).onDismiss(() => {
+  })
+}
+
+const alertDelete = () => {
+  $q.dialog({
+    message: '삭제되었습니다.'
   })
 }
 
@@ -66,15 +67,6 @@ const deleteItem = async (itemId) => {
     alertDelete()
     await getItem()
   }
-}
-
-const alertDelete = () => {
-  $q.dialog({
-    message: '삭제되었습니다.'
-  }).onOk(() => {
-  }).onCancel(() => {
-  }).onDismiss(() => {
-  })
 }
 
 const editItem = async (item) => {

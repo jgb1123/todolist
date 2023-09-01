@@ -48,6 +48,7 @@
 <script setup>
 import axios from "../utils/axios.js";
 
+const $q = useQuasar()
 const props = defineProps(['nowItem'])
 const emit = defineEmits(['refresh-todo-list', 'change-edit-pop-up'])
 const data = ref({
@@ -62,9 +63,15 @@ const edit = async () => {
     content: data.value.content
   })
   if(res.status === 200) {
-    await alert('일정이 변경되었습니다.')
+    await alertChange()
     await emit('change-edit-pop-up', 0)
     await emit('refresh-todo-list')
   }
+}
+
+const alertChange = () => {
+  $q.dialog({
+    message: '일정이 변경되었습니다.'
+  })
 }
 </script>

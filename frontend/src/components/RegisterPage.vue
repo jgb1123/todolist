@@ -27,6 +27,8 @@
 
 <script setup>
 import axios from "../utils/axios.js";
+
+const $q = useQuasar();
 const data = ref({
   email: "",
   password: "",
@@ -42,10 +44,15 @@ const register = async () => {
   });
 
   if(res.status === 201) {
-    console.log('register')
-    alert('회원가입 완료')
     await router.push({name: 'login'})
+    await alertComplete()
   }
+}
+
+const alertComplete = () => {
+  $q.dialog({
+    message: '회원가입이 완료되었습니다.'
+  })
 }
 
 const email_rules = (val) => {

@@ -1,6 +1,7 @@
 import axios from "axios";
 import {useCookies} from "vue3-cookies";
 import router from "../router/index.js";
+
 const { cookies } = useCookies();
 const instance = axios.create({
     baseURL: 'http://localhost:5173/api/v1',
@@ -48,8 +49,9 @@ const getNewTokensAndAgainRequest = async (config) => {
             // return await instance(config)
         }
     } catch(err) {
-        alert("로그인이 필요합니다.")
         await router.push({name: 'login'})
+        await alert("로그인이 필요합니다.")
+
     }
 }
 

@@ -48,6 +48,7 @@
 <script setup>
 import axios from "../utils/axios.js";
 
+const $q = useQuasar()
 const data = ref({
   title: "",
   content: "",
@@ -65,13 +66,19 @@ const add = async () => {
 
   if(res.status === 201) {
     console.log('item add')
-    alert('일정이 등록되었습니다.')
+    alertCreate()
     await emit('change-add-pop-up')
     await emit('refresh-todo-list')
     data.value.title = "";
     data.value.content ="";
     data.value.targetTime ="";
   }
+}
+
+const alertCreate = () => {
+  $q.dialog({
+    message: '일정이 등록되었습니다.'
+  })
 }
 </script>
 
