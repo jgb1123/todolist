@@ -3,6 +3,7 @@ package com.solo.todolist.member.entity;
 import com.solo.todolist.exception.BusinessLogicException;
 import com.solo.todolist.exception.ExceptionCode;
 import com.solo.todolist.item.entity.Item;
+import com.solo.todolist.status.entity.Status;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -48,6 +49,10 @@ public class Member implements UserDetails {
     @OneToMany(mappedBy = "member")
     private List<Item> items = new ArrayList<>();
 
+    @Builder.Default
+    @OneToMany(mappedBy = "member")
+    private List<Status> statuses = new ArrayList<>();
+
     public void changeMemberInfo(Member member) {
         if(member.getPassword() != null) this.password = member.getPassword();
     }
@@ -56,6 +61,13 @@ public class Member implements UserDetails {
         this.items.add(item);
         if(item.getMember() != this) {
             item.changeMember(this);
+        }
+    }
+
+    public void addStatus(Status status) {
+        this.statuses.add(status);
+        if(status.getMember() != this) {
+            status.changeMember(this);
         }
     }
 

@@ -1,6 +1,7 @@
 package com.solo.todolist.item.entity;
 
 import com.solo.todolist.member.entity.Member;
+import com.solo.todolist.status.entity.Status;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -39,6 +40,10 @@ public class Item {
     @JoinColumn(name = "MEMBER_ID")
     private Member member;
 
+    @ManyToOne
+    @JoinColumn(name = "STATUS_ID")
+    private Status status;
+
 //    private String status;
 
     public void changeItemInfo(Item item) {
@@ -56,4 +61,15 @@ public class Item {
             member.addItem(this);
         }
     }
+
+    public void changeStatus(Status status) {
+        if(this.status != null) {
+            this.status.getItems().remove(this);
+        }
+        this.status = status;
+        if(!status.getItems().contains(this)) {
+            status.addItem(this);
+        }
+    }
 }
+

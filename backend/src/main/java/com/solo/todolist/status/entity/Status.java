@@ -1,10 +1,15 @@
 package com.solo.todolist.status.entity;
 
+import com.solo.todolist.item.entity.Item;
+import com.solo.todolist.member.entity.Member;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @SequenceGenerator(
@@ -29,6 +34,14 @@ public class Status {
     @Column
     private Long priority;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "MEMBER_ID")
+    private Member member;
+
+    @Builder.Default
+    @OneToMany(mappedBy = "status")
+    private List<Item> items = new ArrayList<>();
+
     public void setFirstPriority(Status status) {
         this.priority = status.getStatusId();
     }
@@ -39,5 +52,24 @@ public class Status {
 
     public void changeStatusName(String statusName) {
         this.statusName = statusName;
+
     }
+    public void changeMember(Member member) {
+        if(this.member != null) {
+            this.member.getStatuses().remove(this);
+        }
+        this.member = member;
+        if(!member.getStatuses().contains(this)) {
+            member.addStatus(this);
+        }
+    }
+
+    public void addItem(Item item) {
+        this.items.add(item);
+        if(item.getStatus() != this) {
+            item.changeStatus(this);
+        }
+    }
+
+
 }
