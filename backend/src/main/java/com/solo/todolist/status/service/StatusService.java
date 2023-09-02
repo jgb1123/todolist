@@ -2,11 +2,15 @@ package com.solo.todolist.status.service;
 
 import com.solo.todolist.exception.BusinessLogicException;
 import com.solo.todolist.exception.ExceptionCode;
+import com.solo.todolist.member.entity.Member;
 import com.solo.todolist.member.service.MemberService;
 import com.solo.todolist.status.entity.Status;
 import com.solo.todolist.status.repository.StatusRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -17,7 +21,9 @@ public class StatusService {
     private final StatusRepository statusRepository;
     private final MemberService memberService;
 
-    public Status createStatus(Status status) {
+    public Status createStatus(Status status, String email) {
+        Member foundMember = memberService.getVerifiedMember(email);
+        status.changeMember(foundMember);
         Status savedStore = statusRepository.save(status);
         savedStore.setFirstPriority(savedStore);
         return savedStore;
@@ -25,6 +31,12 @@ public class StatusService {
 
     public Status findStatus(Long statusId) {
         return getVerifiedStatus(statusId);
+    }
+
+    public Page<Status> findStatuses(String email, Pageable pageable) {
+        Member foundMember = memberService.getVerifiedMember(email);
+        pageable = PageRequest.of(pageable.getPageNumber() - 1, pageable.getPageSize(), pageable.getSort());
+        return statusRepository.findAllByMember(foundMember, pageable);
     }
 
     public Status updateStatus(Long statusId, Status status) {
