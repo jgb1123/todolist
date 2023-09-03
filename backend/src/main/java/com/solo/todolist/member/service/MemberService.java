@@ -7,6 +7,9 @@ import com.solo.todolist.member.repository.MemberRepository;
 import com.solo.todolist.security.jwt.JwtTokenizer;
 import com.solo.todolist.security.jwt.Tokens;
 import com.solo.todolist.security.utils.CustomAuthorityUtils;
+import com.solo.todolist.status.entity.Status;
+import com.solo.todolist.status.repository.StatusRepository;
+import com.solo.todolist.status.service.StatusService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -18,11 +21,15 @@ import java.util.List;
 @RequiredArgsConstructor
 public class MemberService {
     private final MemberRepository memberRepository;
+    private final StatusRepository statusRepository;
     private final CustomAuthorityUtils customAuthorityUtils;
     private final JwtTokenizer jwtTokenizer;
 
     public Member createMember(Member member) {
         List<String> roles = customAuthorityUtils.createRoles(member.getEmail());
+        Status noneStatus = Status.builder().statusName("None").priority(1L).build();
+        member.addStatus(noneStatus);
+        statusRepository.save(noneStatus);
         member.changeRoles(roles);
         return memberRepository.save(member);
     }

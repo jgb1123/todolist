@@ -62,4 +62,9 @@ public class StatusService {
         return statusRepository.findById(statusId)
                 .orElseThrow(() -> new BusinessLogicException(ExceptionCode.STATUS_NOT_FOUND));
     }
+
+    public Status getVerifiedStatusByStatusName(String statusName) {
+        return statusRepository.findByStatusName(statusName)
+                .orElseThrow(() -> new BusinessLogicException(ExceptionCode.STATUS_NOT_FOUND));
+    }
 }

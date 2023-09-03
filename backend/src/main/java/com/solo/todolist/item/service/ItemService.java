@@ -6,6 +6,8 @@ import com.solo.todolist.item.entity.Item;
 import com.solo.todolist.item.repository.ItemRepository;
 import com.solo.todolist.member.entity.Member;
 import com.solo.todolist.member.service.MemberService;
+import com.solo.todolist.status.entity.Status;
+import com.solo.todolist.status.service.StatusService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -20,9 +22,17 @@ public class ItemService {
 
     private final ItemRepository itemRepository;
     private final MemberService memberService;
+    private final StatusService statusService;
 
-    public Item createItem(Item item, String email) {
+    public Item createItem(Item item, String email, String statusName) {
         Member foundMember = memberService.getVerifiedMember(email);
+        if(statusName != null) {
+            Status foundStatus = statusService.getVerifiedStatusByStatusName(statusName);
+            item.changeStatus(foundStatus);
+        } else {
+            Status foundStatus = statusService.getVerifiedStatusByStatusName("None");
+            item.changeStatus(foundStatus);
+        }
         item.changeMember(foundMember);
         return itemRepository.save(item);
     }

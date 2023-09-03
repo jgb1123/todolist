@@ -8,6 +8,7 @@ import lombok.Data;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Component
@@ -36,6 +37,7 @@ public class ItemMapper {
                 .title(item.getTitle())
                 .content(item.getContent())
                 .targetTime(item.getTargetTime())
+                .statusName(item.getStatus().getStatusName())
                 .build();
     }
 

@@ -20,4 +20,6 @@ public class ItemResponseDTO {
     private String content;
 
     private LocalDateTime targetTime;
+
+    private String statusName;
 }

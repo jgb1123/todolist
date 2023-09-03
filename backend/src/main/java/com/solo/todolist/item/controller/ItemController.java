@@ -34,7 +34,7 @@ public class ItemController {
     public ResponseEntity<SingleResponseDTO<ItemResponseDTO>> postItem(@RequestBody ItemPostDTO itemPostDTO,
                                       @AuthenticationPrincipal String email) {
         Item item = itemMapper.itemPostDTOToItem(itemPostDTO);
-        Item savedItem = itemService.createItem(item, email);
+        Item savedItem = itemService.createItem(item, email, itemPostDTO.getStatusName());
         ItemResponseDTO itemResponseDTO = itemMapper.itemToItemResponseDTO(savedItem);
         return new ResponseEntity<>(new SingleResponseDTO<>(itemResponseDTO), HttpStatus.CREATED);
     }
