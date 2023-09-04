@@ -28,7 +28,15 @@
               <q-icon name="add_circle" />
             </q-item-section>
             <q-item-section>
-              AddToDo
+              Add ToDo
+            </q-item-section>
+          </q-item>
+          <q-item active clickable v-ripple @click="changeStatusPopUp" >
+            <q-item-section avatar>
+              <q-icon name="add_circle" />
+            </q-item-section>
+            <q-item-section>
+              Add Status
             </q-item-section>
           </q-item>
         </q-list>
@@ -38,6 +46,7 @@
     <q-page-container>
       <item-input-page v-model="addPopUpOpen" @change-add-pop-up="changeAddPopUp" @refresh-todo-list="refreshTodoList"/>
       <item-edit-page v-model="editPopUpOpen" @change-edit-pop-up="changeEditPopUp" @refresh-todo-list="refreshTodoList" :nowItem="nowItem"/>
+      <status-input-page v-model="statusPopUpOpen" @change-status-pop-up="changeStatusPopUp"/>
       <to-do-list ref="todoRef" @change-edit-pop-up="changeEditPopUp"/>
     </q-page-container>
   </q-layout>
@@ -46,6 +55,7 @@
 <script setup>
 import ToDoList from '../components/ToDoList.vue'
 import ItemInputPage from '../components/ItemInputPage.vue'
+import StatusInputPage from "../components/StatusInputPage.vue";
 import {useCookies} from "vue3-cookies";
 import router from "../router/index.js";
 import ItemEditPage from "../components/ItemEditPage.vue";
@@ -57,6 +67,8 @@ const $q = useQuasar();
 const addPopUpOpen = ref(false);
 
 const editPopUpOpen = ref(false);
+
+const statusPopUpOpen = ref(false);
 
 const leftDrawerOpen = ref(false);
 
@@ -75,6 +87,10 @@ const changeAddPopUp = () => {
 const changeEditPopUp = (item) => {
   editPopUpOpen.value = !editPopUpOpen.value;
   nowItem.value = item
+}
+
+const changeStatusPopUp = () => {
+  statusPopUpOpen.value = !statusPopUpOpen.value;
 }
 
 const refreshTodoList = () => {

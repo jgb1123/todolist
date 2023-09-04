@@ -1,15 +1,15 @@
 <template>
   <q-dialog>
-    <q-card square bordered class="q-pa-lg shadow-1" style="width: 340px; max-width: 90vw;">
+    <q-card square bordered class="q-pa-lg shadow-1 bg-light-blue-1" style="width: 340px; max-width: 90vw;">
       <q-card-section horizontal>
         <q-card-section style="width: 310px">
           <h4>일정 등록</h4>
-          <q-input square filled v-model="data.title" type="email" label="title" style="width: 260px" />
-          <q-separator />
-          <q-input square filled v-model="data.content" type="textarea" label="content" style="width: 260px" />
+          <q-input class="q-pa-sm" square filled v-model="data.title" type="email" label="title" style="width: 260px" />
+          <q-input class="q-pa-sm" square filled v-model="data.content" type="textarea" label="content" style="width: 260px" />
+          <q-select class="q-pa-sm" square filled v-model="model" :options="statuses" label="status" style="width: 260px" />
 
-          <div class="q-pa-md" style="max-width: 300px">
-            <q-input filled v-model="data.targetTime">
+          <div style="width: 290px; max-width: 260px">
+            <q-input class="q-pa-sm" filled v-model="data.targetTime">
               <template v-slot:prepend>
                 <q-icon name="event" class="cursor-pointer">
                   <q-popup-proxy cover transition-show="scale" transition-hide="scale">
@@ -52,16 +52,21 @@ const $q = useQuasar()
 const data = ref({
   title: "",
   content: "",
-  targetTime: ""
+  targetTime: "",
+  statusName: ""
 })
 const router = useRouter();
 const emit = defineEmits(['change-add-pop-up', 'refresh-todo-list'])
+const model = ref();
+const statuses = ref([]);
+
 
 const add = async () => {
   const res = await axios.post('/item/create', {
     targetTime: data.value.targetTime,
     title: data.value.title,
-    content: data.value.content
+    content: data.value.content,
+    statusName: model.value
   })
 
   if(res.status === 201) {
@@ -74,6 +79,16 @@ const add = async () => {
     data.value.targetTime ="";
   }
 }
+
+const getStatuses = async () => {
+  const res = await axios.get('/status/find')
+  if(res.status === 200) {
+    statuses.value = res.data.data.map(status => status.statusName);
+  }
+}
+onMounted(() => {
+  getStatuses()
+})
 
 const alertCreate = () => {
   $q.dialog({
