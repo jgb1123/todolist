@@ -1,56 +1,3 @@
-<!-- <template>
-  <div id="todolist">
-    <q-card>
-      <q-card-section horizontal style="width: 840px">
-        <q-separator vertical />
-        <q-card-section style="width: 200px;"  class="bg-white">
-          <div class="text-h5"> Date </div>
-        </q-card-section>
-        <q-separator vertical />
-        <q-card-section style="width: 250px;" class="bg-white">
-          <div class="text-h5"> Title </div>
-        </q-card-section>
-        <q-separator vertical />
-        <q-card-section style="width: 400px;" class="bg-white">
-          <div class="text-h5"> Content </div>
-        </q-card-section>
-        <q-separator vertical />
-        <q-card-section style="width: 200px;" class="bg-white">
-          <div class="text-h5"> Status</div>
-        </q-card-section>
-      </q-card-section>
-    </q-card>
-
-    <q-card v-for= "(item, i) in items" :key="i" class="q-mt-md bg-white text-black" style="width: 900px;">
-      <q-card-section horizontal>
-        <q-card-section style="width: 200px;"  class="bg-light-blue-4">
-          <div class="text-h5">{{ dayjs(item.targetTime).format('YYYY-MM-DD HH:mm') }}</div>
-        </q-card-section>
-        <q-separator vertical />
-        <q-card-section style="width: 250px;" class="bg-light-blue-3">
-          <div class="text-h6">{{ item.title }}</div>
-        </q-card-section>
-        <q-separator vertical />
-        <q-card-section style="width: 400px;" class="bg-light-blue-2">
-          <div>
-            <q-scroll-area style="height: 50px; max-width: 400px; word-break: break-all">
-              <div class="q-py-xs">{{ item.content }}</div>
-            </q-scroll-area>
-          </div>
-        </q-card-section>
-        <q-separator vertical />
-        <q-card-section style="width: 200px;" class="bg-light-blue-1">
-          <div class="text-h6">{{ item.statusName }}</div>
-        </q-card-section>
-        <q-separator vertical />
-        <q-card-actions align="right" style="width: 60px;">
-          <q-btn icon="mode_edit" color="primary" @click="editItem(item)" />
-          <q-btn icon="delete" color="primary" @click="confirm(item.itemId)" />
-        </q-card-actions>
-      </q-card-section>
-    </q-card>
-  </div>
-</template> -->
 <template>
   <div class="q-pa-md">
     <q-table
@@ -64,8 +11,8 @@
     >
       <template v-slot:body-cell-actions="props">
         <q-td :props="props">
-          <q-btn icon="mode_edit" color="primary" @click="editItem(props.row)" />
-          <q-btn icon="delete" color="primary" @click="confirm(props.row.itemId)" />
+          <q-btn icon="mode_edit" color="light-blue-4" @click="editItem(props.row)" />
+          <q-btn icon="delete" color="light-blue-4" @click="confirm(props.row.itemId)" />
         </q-td>
       </template>
     </q-table>

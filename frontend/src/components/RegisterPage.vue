@@ -12,6 +12,8 @@
                        square filled v-model="data.email" type="email" label="email" />
               <q-input :rules="[password_rules]"
                        square filled v-model="data.password" type="password" label="password" />
+              <q-input :rules="[password_confirm_rules]"
+                       square filled v-model="data.passwordConfirm" type="password" label="password confirm" />
               <q-input :rules="[name_rules]"
                        square filled v-model="data.name" label="name" />
               <q-card-actions class="q-px-md">
@@ -32,6 +34,7 @@ const $q = useQuasar();
 const data = ref({
   email: "",
   password: "",
+  passwordConfirm: "",
   name: ""
 })
 const router = useRouter();
@@ -77,6 +80,20 @@ const password_rules = (val) => {
   const a = val.match(/^[a-zA-z0-9]+$/);
   if(!a) {
     return '영문, 숫자 조합이어야 합니다.'
+  }
+}
+
+const password_confirm_rules = (val) => {
+  const len = val.length
+  if(len < 8 || len > 20) {
+    return '비밀번호는 8자이상 20자 이하여야 합니다.'
+  }
+  const a = val.match(/^[a-zA-z0-9]+$/);
+  if(!a) {
+    return '영문, 숫자 조합이어야 합니다.'
+  }
+  if(val !== data.value.password) {
+    return '비밀번호를 확인해주세요'
   }
 }
 

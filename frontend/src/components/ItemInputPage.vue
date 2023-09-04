@@ -6,7 +6,7 @@
           <h4>일정 등록</h4>
           <q-input class="q-pa-sm" square filled v-model="data.title" type="email" label="title" style="width: 260px" />
           <q-input class="q-pa-sm" square filled v-model="data.content" type="textarea" label="content" style="width: 260px" />
-          <q-select class="q-pa-sm" square filled v-model="model" :options="statuses" label="status" style="width: 260px" />
+          <q-select class="q-pa-sm" square filled v-model="data.statusName" :options="statuses" label="status" style="width: 260px" />
 
           <div style="width: 290px; max-width: 260px">
             <q-input class="q-pa-sm" filled v-model="data.targetTime">
@@ -57,16 +57,16 @@ const data = ref({
 })
 const router = useRouter();
 const emit = defineEmits(['change-add-pop-up', 'refresh-todo-list'])
-const model = ref();
 const statuses = ref([]);
 
 
 const add = async () => {
+  console.log(data.value.statusName)
   const res = await axios.post('/item/create', {
     targetTime: data.value.targetTime,
     title: data.value.title,
     content: data.value.content,
-    statusName: model.value
+    statusName: data.value.statusName
   })
 
   if(res.status === 201) {
@@ -75,8 +75,9 @@ const add = async () => {
     await emit('change-add-pop-up')
     await emit('refresh-todo-list')
     data.value.title = "";
-    data.value.content ="";
-    data.value.targetTime ="";
+    data.value.content = "";
+    data.value.targetTime = "";
+    data.value.statusName = "";
   }
 }
 

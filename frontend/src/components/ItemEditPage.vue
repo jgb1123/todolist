@@ -5,8 +5,8 @@
         <q-card-section style="width: 310px">
           <h4>일정 변경</h4>
           <q-input square filled v-model="data.title" type="email" label="title" style="width: 260px" />
-          <q-separator />
           <q-input square filled v-model="data.content" type="textarea" label="content" style="width: 260px" />
+          <q-select class="q-pa-sm" square filled v-model="data.statusName" :options="statuses" label="status" style="width: 260px" />
 
           <div class="q-pa-md" style="max-width: 300px">
             <q-input filled v-model="data.targetTime">
@@ -54,20 +54,39 @@ const emit = defineEmits(['refresh-todo-list', 'change-edit-pop-up'])
 const data = ref({
   title: "",
   content: "",
-  targetTime: ""
+  targetTime: "",
+  statusName: ""
 })
+const statuses = ref([]);
+
+
 const edit = async () => {
   const res = await axios.post(`/item/update/${props.nowItem.itemId}`, {
     targetTime: data.value.targetTime,
     title: data.value.title,
-    content: data.value.content
+    content: data.value.content,
+    statusName: data.value.statusName
   })
   if(res.status === 200) {
     await alertChange()
     await emit('change-edit-pop-up', 0)
     await emit('refresh-todo-list')
+    data.value.title = "";
+    data.value.content = "";
+    data.value.targetTime = "";
+    data.value.statusName = "";
   }
 }
+
+const getStatuses = async () => {
+  const res = await axios.get('/status/find')
+  if(res.status === 200) {
+    statuses.value = res.data.data.map(status => status.statusName);
+  }
+}
+onMounted(() => {
+  getStatuses()
+})
 
 const alertChange = () => {
   $q.dialog({
