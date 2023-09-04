@@ -31,6 +31,7 @@
               Add ToDo
             </q-item-section>
           </q-item>
+          <q-separator></q-separator>
           <q-item active clickable v-ripple @click="changeStatusPopUp" >
             <q-item-section avatar>
               <q-icon name="add_circle" />

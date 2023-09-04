@@ -44,8 +44,8 @@ public class Status {
     @OneToMany(mappedBy = "status")
     private List<Item> items = new ArrayList<>();
 
-    public void setFirstPriority(Status status) {
-        this.priority = status.getStatusId();
+    public void setFirstPriority(Long statusId) {
+        this.priority = statusId;
     }
 
     public void changePriority(Long priority) {

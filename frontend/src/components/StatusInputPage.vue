@@ -27,22 +27,30 @@ const emit = defineEmits(['change-status-pop-up'])
 
 
 const add = async () => {
-  const res = await axios.post('/status/create', {
-    statusName: data.value.statusName
-  })
-
-  if(res.status === 201) {
-    console.log('item add')
-    alertCreate()
-    await emit('change-status-pop-up')
-    data.value.statusName ="";
+  try{
+    const res = await axios.post('/status/create', {
+      statusName: data.value.statusName
+    })
+    if(res.status === 201) {
+      console.log('item add')
+      alertCreate()
+      await emit('change-status-pop-up')
+      data.value.statusName ="";
+    }
+  } catch (e) {
+    alertDenied()
   }
 }
-
 
 const alertCreate = () => {
   $q.dialog({
     message: 'Status가 등록되었습니다.'
+  })
+}
+
+const alertDenied = () => {
+  $q.dialog({
+    message: '이미 같은 이름의 Status가 존재합니다.'
   })
 }
 </script>

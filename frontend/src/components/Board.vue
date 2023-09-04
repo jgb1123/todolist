@@ -9,7 +9,7 @@
         >
           <p class="text-gray-700 font-semi-bold font-sans tracking-wide text-sm">{{ status.statusName }}</p>
           <!--           Draggable component comes from vuedraggable. It provides drag & drop functionality -->
-<!--          <draggable :list=status.items :animation="200" ghost-class="ghost-card" group="items">-->
+<!--          <draggable v-model="status" :list=status.items :animation="200" ghost-class="ghost-card" group="items">-->
             <!--             Each element from here will be draggable and animated. Note :key is very important here to be unique both for draggable and animations to be smooth & consistent. -->
             <task-card
                 v-for="(item, i) in status.items"
@@ -27,8 +27,7 @@
 
 <script setup>
 import axios from "../utils/axios.js";
-import draggable from "vuedraggable"
-import TaskCard from "./TaskCard.vue";
+import TaskCard from "./ItemCard.vue";
 
 const statuses = ref([])
 const getStatuses = async () => {

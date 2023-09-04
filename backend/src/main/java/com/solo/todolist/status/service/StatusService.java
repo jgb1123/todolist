@@ -30,9 +30,12 @@ public class StatusService {
 
     public Status createStatus(Status status, String email) {
         Member foundMember = memberService.getVerifiedMember(email);
+        if(statusRepository.findByStatusNameAndMember(status.getStatusName(), foundMember).isPresent()) {
+            throw new BusinessLogicException(ExceptionCode.STATUS_EXISTS);
+        }
         status.changeMember(foundMember);
         Status savedStore = statusRepository.save(status);
-        savedStore.setFirstPriority(savedStore);
+        savedStore.setFirstPriority(savedStore.getStatusId());
         return savedStore;
     }
 
