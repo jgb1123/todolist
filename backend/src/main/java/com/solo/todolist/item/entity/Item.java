@@ -7,6 +7,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.util.StringUtils;
 
 import java.time.LocalDateTime;
 
@@ -47,8 +48,8 @@ public class Item {
 //    private String status;
 
     public void changeItemInfo(Item item) {
-        if(item.getTitle() != null) this.title = item.getTitle();
-        if(item.getContent() != null) this.content = item.getContent();
+        if(StringUtils.hasText(item.getTitle())) this.title = item.getTitle();
+        if(StringUtils.hasText(item.getContent())) this.content = item.getContent();
         if(item.getTargetTime() != null) this.targetTime = item.getTargetTime();
     }
 

@@ -7,6 +7,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.BatchSize;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,6 +39,7 @@ public class Status {
     @JoinColumn(name = "MEMBER_ID")
     private Member member;
 
+    @BatchSize(size = 100)
     @Builder.Default
     @OneToMany(mappedBy = "status")
     private List<Item> items = new ArrayList<>();

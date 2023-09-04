@@ -2,6 +2,7 @@ package com.solo.todolist.status.controller;
 
 import com.solo.todolist.dto.MultiResponseDTO;
 import com.solo.todolist.dto.SingleResponseDTO;
+import com.solo.todolist.status.dto.StatusItemsResponseDto;
 import com.solo.todolist.status.dto.StatusPatchDTO;
 import com.solo.todolist.status.dto.StatusPostDTO;
 import com.solo.todolist.status.dto.StatusResponseDTO;
@@ -52,6 +53,15 @@ public class StatusController {
         List<Status> statuses = statusPage.getContent();
         List<StatusResponseDTO> statusResponseDTOs = statusMapper.statusesToStatusResponseDTOs(statuses);
         return new ResponseEntity<>(new MultiResponseDTO<>(statusResponseDTOs, statusPage), HttpStatus.OK);
+    }
+
+    @GetMapping("/find/items")
+    public ResponseEntity<MultiResponseDTO<StatusItemsResponseDto>> getStatusesAndItems(@AuthenticationPrincipal String email,
+                                                                                        @PageableDefault(page = 1, size = 10, sort = "priority", direction = Sort.Direction.ASC) Pageable pageable) {
+        Page<Status> statusPage = statusService.findStatuses(email, pageable);
+        List<Status> statuses = statusPage.getContent();
+        List<StatusItemsResponseDto> statusItemsResponseDTOs = statusMapper.statusesToStatusItemsResponseDTOs(statuses);
+        return new ResponseEntity<>(new MultiResponseDTO<>(statusItemsResponseDTOs, statusPage), HttpStatus.OK);
     }
 
     @PostMapping("/update/{statusId}")

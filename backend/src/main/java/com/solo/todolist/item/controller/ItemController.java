@@ -50,7 +50,7 @@ public class ItemController {
     public ResponseEntity<SingleResponseDTO<ItemResponseDTO>> patchItem(@PathVariable Long itemId,
                                         @RequestBody ItemPatchDTO itemPatchDTO) {
         Item item = itemMapper.itemPatchDTOToItem(itemPatchDTO);
-        Item updatedItem = itemService.updateItem(itemId, item);
+        Item updatedItem = itemService.updateItem(itemId, item, itemPatchDTO.getStatusName());
         ItemResponseDTO itemResponseDTO = itemMapper.itemToItemResponseDTO(updatedItem);
         return new ResponseEntity<>(new SingleResponseDTO<>(itemResponseDTO), HttpStatus.OK);
     }

@@ -14,6 +14,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 @Service
 @Transactional
@@ -26,11 +27,11 @@ public class ItemService {
 
     public Item createItem(Item item, String email, String statusName) {
         Member foundMember = memberService.getVerifiedMember(email);
-        if(statusName != null) {
-            Status foundStatus = statusService.getVerifiedStatusByStatusName(statusName);
+        if(StringUtils.hasText(statusName)) {
+            Status foundStatus = statusService.getVerifiedStatusByStatusName(statusName, foundMember);
             item.changeStatus(foundStatus);
         } else {
-            Status foundStatus = statusService.getVerifiedStatusByStatusName("None");
+            Status foundStatus = statusService.getVerifiedStatusByStatusName("None", foundMember);
             item.changeStatus(foundStatus);
         }
         item.changeMember(foundMember);
@@ -47,8 +48,12 @@ public class ItemService {
         return itemRepository.findAllByMember(foundMember, pageable);
     }
 
-    public Item updateItem(Long itemId, Item item) {
+    public Item updateItem(Long itemId, Item item, String statusName) {
         Item foundItem = getVerifiedItem(itemId);
+        if(StringUtils.hasText(statusName)) {
+            Status foundStatus = statusService.getVerifiedStatusByStatusName(statusName, foundItem.getMember());
+            foundItem.changeStatus(foundStatus);
+        }
         foundItem.changeItemInfo(item);
         return foundItem;
     }

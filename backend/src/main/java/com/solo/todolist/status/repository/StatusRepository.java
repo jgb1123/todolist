@@ -10,5 +10,5 @@ import java.util.Optional;
 
 public interface StatusRepository extends JpaRepository<Status, Long> {
     Page<Status> findAllByMember(Member member, Pageable pageable);
-    Optional<Status> findByStatusName(String statusName);
+    Optional<Status> findByStatusNameAndMember(String statusName, Member member);
 }
