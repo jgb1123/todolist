@@ -1,7 +1,6 @@
 package com.solo.todolist.status.dto;
 
 import com.solo.todolist.item.dto.ItemResponseDTO;
-import com.solo.todolist.item.entity.Item;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -13,7 +12,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class StatusItemsResponseDto {
+public class StatusItemsResponseDTO {
     private Long statusId;
     private String statusName;
     private Long priority;

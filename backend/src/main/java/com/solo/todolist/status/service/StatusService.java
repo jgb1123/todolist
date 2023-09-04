@@ -2,6 +2,9 @@ package com.solo.todolist.status.service;
 
 import com.solo.todolist.exception.BusinessLogicException;
 import com.solo.todolist.exception.ExceptionCode;
+import com.solo.todolist.item.entity.Item;
+import com.solo.todolist.item.repository.ItemRepository;
+import com.solo.todolist.item.service.ItemService;
 import com.solo.todolist.member.entity.Member;
 import com.solo.todolist.member.service.MemberService;
 import com.solo.todolist.status.entity.Status;
@@ -13,6 +16,9 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.Optional;
+
 @Service
 @Transactional
 @RequiredArgsConstructor
@@ -20,6 +26,7 @@ public class StatusService {
 
     private final StatusRepository statusRepository;
     private final MemberService memberService;
+    private final ItemRepository itemRepository;
 
     public Status createStatus(Status status, String email) {
         Member foundMember = memberService.getVerifiedMember(email);
@@ -54,8 +61,15 @@ public class StatusService {
         toStatus.changePriority(fromPriority);
     }
 
-    public void deleteStatus(Long statusId) {
-        statusRepository.deleteById(statusId);
+    public void deleteStatus(String statusName, String email) {
+        Member foundMember = memberService.getVerifiedMember(email);
+        Status foundStatus = getVerifiedStatusByStatusName(statusName, foundMember);
+        Status noneStatus = getVerifiedStatusByStatusName("None", foundMember);
+        List<Item> foundItems = itemRepository.findAllByStatus(foundStatus);
+        for (Item foundItem : foundItems) {
+            foundItem.changeStatus(noneStatus);
+        }
+        statusRepository.delete(foundStatus);
     }
 
     public Status getVerifiedStatus(Long statusId) {

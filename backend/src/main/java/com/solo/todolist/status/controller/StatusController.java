@@ -2,10 +2,7 @@ package com.solo.todolist.status.controller;
 
 import com.solo.todolist.dto.MultiResponseDTO;
 import com.solo.todolist.dto.SingleResponseDTO;
-import com.solo.todolist.status.dto.StatusItemsResponseDto;
-import com.solo.todolist.status.dto.StatusPatchDTO;
-import com.solo.todolist.status.dto.StatusPostDTO;
-import com.solo.todolist.status.dto.StatusResponseDTO;
+import com.solo.todolist.status.dto.*;
 import com.solo.todolist.status.entity.Status;
 import com.solo.todolist.status.mapper.StatusMapper;
 import com.solo.todolist.status.service.StatusService;
@@ -56,11 +53,11 @@ public class StatusController {
     }
 
     @GetMapping("/find/items")
-    public ResponseEntity<MultiResponseDTO<StatusItemsResponseDto>> getStatusesAndItems(@AuthenticationPrincipal String email,
+    public ResponseEntity<MultiResponseDTO<StatusItemsResponseDTO>> getStatusesAndItems(@AuthenticationPrincipal String email,
                                                                                         @PageableDefault(page = 1, size = 10, sort = "priority", direction = Sort.Direction.ASC) Pageable pageable) {
         Page<Status> statusPage = statusService.findStatuses(email, pageable);
         List<Status> statuses = statusPage.getContent();
-        List<StatusItemsResponseDto> statusItemsResponseDTOs = statusMapper.statusesToStatusItemsResponseDTOs(statuses);
+        List<StatusItemsResponseDTO> statusItemsResponseDTOs = statusMapper.statusesToStatusItemsResponseDTOs(statuses);
         return new ResponseEntity<>(new MultiResponseDTO<>(statusItemsResponseDTOs, statusPage), HttpStatus.OK);
     }
 
@@ -80,9 +77,10 @@ public class StatusController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @PostMapping("/delete/{statusId}")
-    public ResponseEntity<HttpStatus> deleteStatus(@PathVariable Long statusId) {
-        statusService.deleteStatus(statusId);
+    @PostMapping("/delete")
+    public ResponseEntity<HttpStatus> deleteStatus(@RequestBody StatusDeleteDTO statusDeleteDTO,
+                                                   @AuthenticationPrincipal String email) {
+        statusService.deleteStatus(statusDeleteDTO.getStatusName(), email);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }

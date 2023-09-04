@@ -39,6 +39,14 @@
               Add Status
             </q-item-section>
           </q-item>
+          <q-item active clickable v-ripple @click="changeDeleteStatusPopUp" >
+            <q-item-section avatar>
+              <q-icon name="delete" />
+            </q-item-section>
+            <q-item-section>
+              Delete Status
+            </q-item-section>
+          </q-item>
         </q-list>
       </q-scroll-area>
     </q-drawer>
@@ -52,6 +60,7 @@
       <item-input-page v-model="addPopUpOpen" @change-add-pop-up="changeAddPopUp" @refresh-todo-list="refreshTodoList"/>
       <item-edit-page v-model="editPopUpOpen" @change-edit-pop-up="changeEditPopUp" @refresh-todo-list="refreshTodoList" :nowItem="nowItem"/>
       <status-input-page v-model="statusPopUpOpen" @change-status-pop-up="changeStatusPopUp"/>
+      <status-delete-page v-model="statusDeletePopUpOpen" @change-delete-status-pop-up="changeDeleteStatusPopUp" />
       <to-do-list v-if="value === true" ref="todoRef" @change-edit-pop-up="changeEditPopUp"/>
       <kanban v-if="value === false"/>
     </q-page-container>
@@ -66,6 +75,7 @@ import {useCookies} from "vue3-cookies";
 import router from "../router/index.js";
 import ItemEditPage from "../components/ItemEditPage.vue";
 import Kanban from "../components/Board.vue";
+import StatusDeletePage from "../components/StatusDeletePage.vue";
 
 const {cookies} = useCookies();
 
@@ -76,6 +86,8 @@ const addPopUpOpen = ref(false);
 const editPopUpOpen = ref(false);
 
 const statusPopUpOpen = ref(false);
+
+const statusDeletePopUpOpen = ref(false);
 
 const leftDrawerOpen = ref(false);
 
@@ -100,6 +112,10 @@ const changeEditPopUp = (item) => {
 
 const changeStatusPopUp = () => {
   statusPopUpOpen.value = !statusPopUpOpen.value;
+}
+
+const changeDeleteStatusPopUp = () => {
+  statusDeletePopUpOpen.value = !statusDeletePopUpOpen.value;
 }
 
 const refreshTodoList = () => {

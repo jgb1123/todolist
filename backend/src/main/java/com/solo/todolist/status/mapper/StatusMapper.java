@@ -1,7 +1,7 @@
 package com.solo.todolist.status.mapper;
 
 import com.solo.todolist.item.mapper.ItemMapper;
-import com.solo.todolist.status.dto.StatusItemsResponseDto;
+import com.solo.todolist.status.dto.StatusItemsResponseDTO;
 import com.solo.todolist.status.dto.StatusPatchDTO;
 import com.solo.todolist.status.dto.StatusPostDTO;
 import com.solo.todolist.status.dto.StatusResponseDTO;
@@ -37,8 +37,8 @@ public class StatusMapper {
                 .build();
     }
 
-    public StatusItemsResponseDto statusToStatusItemsResponseDto(Status status) {
-        return StatusItemsResponseDto.builder()
+    public StatusItemsResponseDTO statusToStatusItemsResponseDto(Status status) {
+        return StatusItemsResponseDTO.builder()
                 .statusId(status.getStatusId())
                 .statusName(status.getStatusName())
                 .priority(status.getPriority())
@@ -53,7 +53,7 @@ public class StatusMapper {
                 .collect(Collectors.toList());
     }
 
-    public List<StatusItemsResponseDto> statusesToStatusItemsResponseDTOs(List<Status> statuses) {
+    public List<StatusItemsResponseDTO> statusesToStatusItemsResponseDTOs(List<Status> statuses) {
         return statuses
                 .stream()
                 .map(this::statusToStatusItemsResponseDto)

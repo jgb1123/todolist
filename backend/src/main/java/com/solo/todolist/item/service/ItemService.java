@@ -16,6 +16,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
+import java.util.List;
+
 @Service
 @Transactional
 @RequiredArgsConstructor
@@ -65,5 +67,9 @@ public class ItemService {
     public Item getVerifiedItem(Long itemId) {
         return itemRepository.findById(itemId)
                 .orElseThrow(() -> new BusinessLogicException(ExceptionCode.ITEM_NOT_FOUND));
+    }
+
+    public List<Item> getVerifiedItemsByStatus(Status status) {
+        return itemRepository.findAllByStatus(status);
     }
 }

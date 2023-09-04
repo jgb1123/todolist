@@ -5,7 +5,7 @@
         <div
             v-for="(status, i) in statuses"
             :key="i"
-            class="bg-gray-100 rounded-lg px-3 py-3 column-width rounded mr-4"
+            class="bg-light-blue-2 rounded-lg px-3 py-3 column-width rounded mr-4"
         >
           <p class="text-gray-700 font-semi-bold font-sans tracking-wide text-sm">{{ status.statusName }}</p>
           <!--           Draggable component comes from vuedraggable. It provides drag & drop functionality -->
