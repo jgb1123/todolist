@@ -2,65 +2,43 @@
   <div id="kanban">
     <div class="flex justify-center">
 
-      <div class="min-h-screen flex overflow-x-scroll py-12">
-        <div
+      <div class="min-h-screen flex overflow-x-scroll py-12 flex">
+        <draggable
+          class="list-group flex"
+          :list="statusStore.$state.statuses"
+          group="people"
+          @change="log"
+          itemKey="statusId"
+        >
+          <div
             v-for="(status, i) in statusStore.$state.statuses"
             :key="i"
-            class="bg-light-blue-2 rounded-lg px-3 py-3 column-width rounded mr-4"
-        >
-          <p class="text-gray-700 font-semi-bold font-sans tracking-wide text-sm">{{ status.statusName }}</p>
-            <task-card
+            class="bg-light-blue-2 rounded-lg px-3 py-3 column-width rounded mr-4 mt-3 cursor-move"
+          >
+            <p class="text-gray-700 font-semi-bold font-sans tracking-wide text-sm">{{ status.statusName }}</p>
+            <item-card
                 v-for="(item, i) in status.items"
                 :key="i"
                 :item="item"
-                class="mt-3 cursor-move"
-            ></task-card>
-        </div>
-
-        <div class="col-3">
-          <h3>Draggable 1</h3>
-          <draggable
-              class="list-group"
-              :list="statusStore.$state.statuses"
-              group="people"
-              @change="log"
-              itemKey="statusId"
-          >
-            <template #item="{ element, index }">
-              <div>
-                {{element}}
-                <q-btn class="list-group-item">{{ element.statusName }} {{ index }}</q-btn>
-              </div>
-            </template>
-          </draggable>
-        </div>
+                class="mt-3"
+            ></item-card>
+          </div>
+        </draggable>
       </div>
     </div>
   </div>
 </template>
 
 <script setup>
-import TaskCard from "./ItemCard.vue";
+import ItemCard from "./ItemCard.vue";
 import {useStatusStore} from "../store/StatusStore.js";
-import draggable from "vuedraggable"
+import { VueDraggableNext as draggable } from "vue-draggable-next";
 
 const statusStore = useStatusStore();
 
 const log = (event) => {
   console.log(event)
 }
-
-// const statuses = ref([])
-// const getStatuses = async () => {
-//   const res = await axios.get('/status/find')
-//   if(res.status === 200 ) {
-//     statuses.value = res.data.data;
-//   }
-// }
-//
-// onMounted(() => {
-//   getStatuses()
-// })
 
 </script>
 
