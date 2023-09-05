@@ -23,7 +23,6 @@ instance.interceptors.request.use(
 
 instance.interceptors.response.use(
     (res) => {
-        console.log('axios response', res);
         return res
     },
     async (error) => {

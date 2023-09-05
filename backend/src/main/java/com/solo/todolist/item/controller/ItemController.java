@@ -57,7 +57,7 @@ public class ItemController {
 
     @GetMapping("/find")
     public ResponseEntity<MultiResponseDTO<ItemResponseDTO>> getItems(@AuthenticationPrincipal String email,
-                                      @PageableDefault(page = 1, size = 10, sort = "targetTime", direction = Sort.Direction.ASC) Pageable pageable) {
+                                      @PageableDefault(page = 1, size = 1000, sort = "targetTime", direction = Sort.Direction.ASC) Pageable pageable) {
         Page<Item> itemPage = itemService.findItems(email, pageable);
         List<Item> items = itemPage.getContent();
         List<ItemResponseDTO> itemResponseDTOs = itemMapper.itemsToItemResponseDTOs(items);

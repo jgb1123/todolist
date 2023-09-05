@@ -6,7 +6,7 @@
           <h4>일정 등록</h4>
           <q-input class="q-pa-sm" square filled v-model="data.title" type="email" label="title" style="width: 260px" />
           <q-input class="q-pa-sm" square filled v-model="data.content" type="textarea" label="content" style="width: 260px" />
-          <q-select class="q-pa-sm" square filled v-model="data.statusName" :options="statuses" label="status" style="width: 260px" />
+          <q-select class="q-pa-sm" square filled v-model="data.statusName" :options="statusStore.$state.statuses" label="status" style="width: 260px" />
 
           <div style="width: 290px; max-width: 260px">
             <q-input class="q-pa-sm" filled v-model="data.targetTime">
@@ -47,6 +47,9 @@
 
 <script setup>
 import axios from "../utils/axios.js";
+import {useStatusStore} from "../store/StatusStore.js";
+
+const statusStore = useStatusStore();
 
 const $q = useQuasar()
 const data = ref({
@@ -57,8 +60,6 @@ const data = ref({
 })
 const router = useRouter();
 const emit = defineEmits(['change-add-pop-up', 'refresh-todo-list'])
-const statuses = ref([]);
-
 
 const add = async () => {
   console.log(data.value.statusName)
@@ -72,8 +73,8 @@ const add = async () => {
   if(res.status === 201) {
     console.log('item add')
     alertCreate()
-    await emit('change-add-pop-up')
-    await emit('refresh-todo-list')
+    emit('change-add-pop-up')
+    emit('refresh-todo-list')
     data.value.title = "";
     data.value.content = "";
     data.value.targetTime = "";
@@ -84,7 +85,7 @@ const add = async () => {
 const getStatuses = async () => {
   const res = await axios.get('/status/find')
   if(res.status === 200) {
-    statuses.value = res.data.data.map(status => status.statusName);
+    statusStore.setStatuses(res.data.data.map(s => s.statusName));
   }
 }
 onMounted(() => {

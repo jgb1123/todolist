@@ -6,7 +6,7 @@
           <h4>일정 변경</h4>
           <q-input square filled v-model="data.title" type="email" label="title" style="width: 260px" />
           <q-input square filled v-model="data.content" type="textarea" label="content" style="width: 260px" />
-          <q-select class="q-pa-sm" square filled v-model="data.statusName" :options="statuses" label="status" style="width: 260px" />
+          <q-select class="q-pa-sm" square filled v-model="data.statusName" :options="statusStore.$state.statuses" label="status" style="width: 260px" />
 
           <div class="q-pa-md" style="max-width: 300px">
             <q-input filled v-model="data.targetTime">
@@ -47,6 +47,10 @@
 
 <script setup>
 import axios from "../utils/axios.js";
+import {useStatusStore} from "../store/StatusStore.js";
+
+const statusStore = useStatusStore();
+const statuses = storeToRefs(statusStore);
 
 const $q = useQuasar()
 const props = defineProps(['nowItem'])
@@ -57,8 +61,6 @@ const data = ref({
   targetTime: "",
   statusName: ""
 })
-const statuses = ref([]);
-
 
 const edit = async () => {
   const res = await axios.post(`/item/update/${props.nowItem.itemId}`, {
@@ -77,16 +79,6 @@ const edit = async () => {
     data.value.statusName = "";
   }
 }
-
-const getStatuses = async () => {
-  const res = await axios.get('/status/find')
-  if(res.status === 200) {
-    statuses.value = res.data.data.map(status => status.statusName);
-  }
-}
-onMounted(() => {
-  getStatuses()
-})
 
 const alertChange = () => {
   $q.dialog({

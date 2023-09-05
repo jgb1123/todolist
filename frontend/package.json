@@ -12,6 +12,7 @@
     "@quasar/extras": "^1.16.5",
     "axios": "^1.4.0",
     "dayjs": "^1.11.9",
+    "pinia": "^2.1.6",
     "quasar": "^2.12.5",
     "unplugin-vue-components": "^0.25.1",
     "vue": "^3.3.4",

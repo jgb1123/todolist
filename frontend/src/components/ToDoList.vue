@@ -1,9 +1,19 @@
 <template>
   <div class="q-pa-md">
+    <q-select
+        filled
+        v-model="selectModel"
+        use-input
+        use-chips
+        multiple
+        input-debounce="0"
+        :options="statusStore.$state.statuses"
+        style="width: 500px"
+    />
     <q-table
       class="my-sticky-header-table"
       flat bordered
-      :rows="items"
+      :rows="itemStore.$state.items"
       :columns="columns"
       row-key="name"
       :hide-pagination="true"
@@ -24,18 +34,24 @@
 <script setup>
 import axios from '../utils/axios.js';
 import dayjs from "dayjs";
+import {useItemStore} from "../store/ItemStore.js";
+import {useStatusStore} from "../store/StatusStore.js";
 
 const router = useRouter();
 const $q = useQuasar();
+const itemStore = useItemStore();
+const statusStore = useStatusStore();
 // const page = ref(1);
-const records = ref(0);
-const items = ref([]);
 const emit = defineEmits(['change-edit-pop-up'])
 
 const pagination = {
   page: 1,
   rowsPerPage: 0
 }
+// temp
+const selectModel = ref(null);
+
+// temp
 const columns = [
   {
     name: 'date',
@@ -84,8 +100,7 @@ const getItem = async () => {
   const res = await axios.get('/item/find')
 
   if(res.status === 200) {
-    records.value = res.headers['x-total-count'] || 0;
-    items.value = res.data.data;
+    itemStore.setItems(res.data.data);
   }
 }
 
@@ -128,8 +143,6 @@ onMounted( ()=> {
 
 <style lang="sass">
 .my-sticky-header-table
-  height: 700px
-
   .q-table__top,
   .q-table__bottom,
   thead tr:first-child th

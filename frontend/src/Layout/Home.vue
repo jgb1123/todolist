@@ -63,7 +63,7 @@
       <status-input-page v-model="statusPopUpOpen" @change-status-pop-up="changeStatusPopUp"/>
       <status-delete-page v-model="statusDeletePopUpOpen" @change-delete-status-pop-up="changeDeleteStatusPopUp" />
       <to-do-list v-if="value === true" ref="todoRef" @change-edit-pop-up="changeEditPopUp"/>
-      <kanban v-if="value === false"/>
+      <board-page v-if="value === false"/>
     </q-page-container>
   </q-layout>
 </template>
@@ -75,7 +75,7 @@ import StatusInputPage from "../components/StatusInputPage.vue";
 import {useCookies} from "vue3-cookies";
 import router from "../router/index.js";
 import ItemEditPage from "../components/ItemEditPage.vue";
-import Kanban from "../components/Board.vue";
+import BoardPage from "../components/BoardPage.vue";
 import StatusDeletePage from "../components/StatusDeletePage.vue";
 
 const {cookies} = useCookies();

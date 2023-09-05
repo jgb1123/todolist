@@ -31,7 +31,7 @@ import TaskCard from "./ItemCard.vue";
 
 const statuses = ref([])
 const getStatuses = async () => {
-  const res = await axios.get('status/find/items')
+  const res = await axios.get('/status/find')
   if(res.status === 200 ) {
     statuses.value = res.data.data;
   }
