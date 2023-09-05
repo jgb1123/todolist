@@ -4,7 +4,7 @@
       <q-card-section horizontal>
         <q-card-section style="width: 310px">
           <h4>Status 삭제</h4>
-          <q-select class="q-pa-sm" square filled v-model="data.statusName" :options="statusStore.$state.statuses" label="status" style="width: 260px" />
+          <q-select class="q-pa-sm" square filled v-model="data.statusName" :options="statusStore.$state.statusNames" label="status" style="width: 260px" />
 
           <q-card-actions class="q-px-md">
             <q-btn unelevated color="light-blue-7" size="lg" class="full-width" label="삭제" @click="remove" />
@@ -26,7 +26,7 @@ const data = ref({
   statusName: ""
 })
 const router = useRouter();
-const emit = defineEmits(['change-delete-status-pop-up'])
+const emit = defineEmits(['change-delete-status-pop-up', 'refresh-status-list'])
 
 const remove = async () => {
   const res = await axios.post('/status/delete', {
@@ -35,7 +35,8 @@ const remove = async () => {
 
   if(res.status === 204) {
     alertRemove()
-    await emit('change-delete-status-pop-up')
+    emit('change-delete-status-pop-up')
+    emit('refresh-status-list')
     data.value.statusName ="";
   }
 }

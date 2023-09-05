@@ -23,7 +23,7 @@ const data = ref({
   statusName: ""
 })
 const router = useRouter();
-const emit = defineEmits(['change-status-pop-up'])
+const emit = defineEmits(['change-status-pop-up', 'refresh-status-list'])
 
 
 const add = async () => {
@@ -32,9 +32,9 @@ const add = async () => {
       statusName: data.value.statusName
     })
     if(res.status === 201) {
-      console.log('item add')
       alertCreate()
-      await emit('change-status-pop-up')
+      emit('change-status-pop-up')
+      emit('refresh-status-list')
       data.value.statusName ="";
     }
   } catch (e) {

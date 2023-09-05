@@ -7,7 +7,7 @@
         use-chips
         multiple
         input-debounce="0"
-        :options="statusStore.$state.statuses"
+        :options="statusStore.$state.statusNames"
         style="width: 500px"
     />
     <q-table
@@ -50,6 +50,7 @@ const pagination = {
 }
 // temp
 const selectModel = ref(null);
+
 
 // temp
 const columns = [
@@ -105,6 +106,7 @@ const getItem = async () => {
 }
 
 const confirm = (itemId) => {
+  console.log(selectModel)
   $q.dialog({
     ok: {
       color: 'negative'

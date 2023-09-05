@@ -6,7 +6,7 @@
           <h4>일정 등록</h4>
           <q-input class="q-pa-sm" square filled v-model="data.title" type="email" label="title" style="width: 260px" />
           <q-input class="q-pa-sm" square filled v-model="data.content" type="textarea" label="content" style="width: 260px" />
-          <q-select class="q-pa-sm" square filled v-model="data.statusName" :options="statusStore.$state.statuses" label="status" style="width: 260px" />
+          <q-select class="q-pa-sm" square filled v-model="data.statusName" :options="statusStore.$state.statusNames" label="status" style="width: 260px" />
 
           <div style="width: 290px; max-width: 260px">
             <q-input class="q-pa-sm" filled v-model="data.targetTime">
@@ -85,12 +85,15 @@ const add = async () => {
 const getStatuses = async () => {
   const res = await axios.get('/status/find')
   if(res.status === 200) {
-    statusStore.setStatuses(res.data.data.map(s => s.statusName));
+    statusStore.setStatuses(res.data.data)
+    statusStore.setStatusNames(res.data.data.map(s => s.statusName));
   }
 }
 onMounted(() => {
   getStatuses()
 })
+
+defineExpose({getStatuses})
 
 const alertCreate = () => {
   $q.dialog({

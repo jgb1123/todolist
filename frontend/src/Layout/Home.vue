@@ -58,10 +58,10 @@
         <q-toggle v-model="value" />
         <span>Table</span>
       </div>
-      <item-input-page v-model="addPopUpOpen" @change-add-pop-up="changeAddPopUp" @refresh-todo-list="refreshTodoList"/>
+      <item-input-page ref="statusRef" v-model="addPopUpOpen" @change-add-pop-up="changeAddPopUp" @refresh-todo-list="refreshTodoList"/>
       <item-edit-page v-model="editPopUpOpen" @change-edit-pop-up="changeEditPopUp" @refresh-todo-list="refreshTodoList" :nowItem="nowItem"/>
-      <status-input-page v-model="statusPopUpOpen" @change-status-pop-up="changeStatusPopUp"/>
-      <status-delete-page v-model="statusDeletePopUpOpen" @change-delete-status-pop-up="changeDeleteStatusPopUp" />
+      <status-input-page v-model="statusPopUpOpen" @refresh-status-list="refreshStatusList" @change-status-pop-up="changeStatusPopUp"/>
+      <status-delete-page v-model="statusDeletePopUpOpen" @refresh-status-list="refreshStatusList" @change-delete-status-pop-up="changeDeleteStatusPopUp" />
       <to-do-list v-if="value === true" ref="todoRef" @change-edit-pop-up="changeEditPopUp"/>
       <board-page v-if="value === false"/>
     </q-page-container>
@@ -96,6 +96,8 @@ let nowItem = ref();
 
 const todoRef = ref();
 
+const statusRef = ref();
+
 const value = ref(true);
 
 const toggleLeftDrawer = () => {
@@ -121,6 +123,10 @@ const changeDeleteStatusPopUp = () => {
 
 const refreshTodoList = () => {
   todoRef.value.getItem();
+}
+
+const refreshStatusList = () => {
+  statusRef.value.getStatuses();
 }
 
 const logout = async () => {

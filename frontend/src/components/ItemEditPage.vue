@@ -6,7 +6,7 @@
           <h4>일정 변경</h4>
           <q-input square filled v-model="data.title" type="email" label="title" style="width: 260px" />
           <q-input square filled v-model="data.content" type="textarea" label="content" style="width: 260px" />
-          <q-select class="q-pa-sm" square filled v-model="data.statusName" :options="statusStore.$state.statuses" label="status" style="width: 260px" />
+          <q-select class="q-pa-sm" square filled v-model="data.statusName" :options="statusStore.$state.statusNames" label="status" style="width: 260px" />
 
           <div class="q-pa-md" style="max-width: 300px">
             <q-input filled v-model="data.targetTime">
@@ -50,7 +50,6 @@ import axios from "../utils/axios.js";
 import {useStatusStore} from "../store/StatusStore.js";
 
 const statusStore = useStatusStore();
-const statuses = storeToRefs(statusStore);
 
 const $q = useQuasar()
 const props = defineProps(['nowItem'])

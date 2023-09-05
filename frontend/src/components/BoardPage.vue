@@ -3,7 +3,7 @@
     <div class="flex justify-center">
       <div class="min-h-screen flex overflow-x-scroll py-12">
         <div
-            v-for="(status, i) in statuses"
+            v-for="(status, i) in statusStore.$state.statuses"
             :key="i"
             class="bg-light-blue-2 rounded-lg px-3 py-3 column-width rounded mr-4"
         >
@@ -28,18 +28,20 @@
 <script setup>
 import axios from "../utils/axios.js";
 import TaskCard from "./ItemCard.vue";
+import {useStatusStore} from "../store/StatusStore.js";
+const statusStore = useStatusStore();
 
-const statuses = ref([])
-const getStatuses = async () => {
-  const res = await axios.get('/status/find')
-  if(res.status === 200 ) {
-    statuses.value = res.data.data;
-  }
-}
-
-onMounted(() => {
-  getStatuses()
-})
+// const statuses = ref([])
+// const getStatuses = async () => {
+//   const res = await axios.get('/status/find')
+//   if(res.status === 200 ) {
+//     statuses.value = res.data.data;
+//   }
+// }
+//
+// onMounted(() => {
+//   getStatuses()
+// })
 
 </script>
 
