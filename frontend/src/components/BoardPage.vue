@@ -1,6 +1,7 @@
 <template>
   <div id="kanban">
     <div class="flex justify-center">
+
       <div class="min-h-screen flex overflow-x-scroll py-12">
         <div
             v-for="(status, i) in statusStore.$state.statuses"
@@ -8,17 +9,30 @@
             class="bg-light-blue-2 rounded-lg px-3 py-3 column-width rounded mr-4"
         >
           <p class="text-gray-700 font-semi-bold font-sans tracking-wide text-sm">{{ status.statusName }}</p>
-          <!--           Draggable component comes from vuedraggable. It provides drag & drop functionality -->
-<!--          <draggable v-model="status" :list=status.items :animation="200" ghost-class="ghost-card" group="items">-->
-            <!--             Each element from here will be draggable and animated. Note :key is very important here to be unique both for draggable and animations to be smooth & consistent. -->
             <task-card
                 v-for="(item, i) in status.items"
                 :key="i"
                 :item="item"
                 class="mt-3 cursor-move"
             ></task-card>
-            <!--             </transition-group> -->
-<!--          </draggable>-->
+        </div>
+
+        <div class="col-3">
+          <h3>Draggable 1</h3>
+          <draggable
+              class="list-group"
+              :list="statusStore.$state.statuses"
+              group="people"
+              @change="log"
+              itemKey="statusId"
+          >
+            <template #item="{ element, index }">
+              <div>
+                {{element}}
+                <q-btn class="list-group-item">{{ element.statusName }} {{ index }}</q-btn>
+              </div>
+            </template>
+          </draggable>
         </div>
       </div>
     </div>
@@ -26,10 +40,15 @@
 </template>
 
 <script setup>
-import axios from "../utils/axios.js";
 import TaskCard from "./ItemCard.vue";
 import {useStatusStore} from "../store/StatusStore.js";
+import draggable from "vuedraggable"
+
 const statusStore = useStatusStore();
+
+const log = (event) => {
+  console.log(event)
+}
 
 // const statuses = ref([])
 // const getStatuses = async () => {

@@ -13,7 +13,7 @@
     <q-table
       class="my-sticky-header-table"
       flat bordered
-      :rows="itemStore.$state.items"
+      :rows="toDoItems"
       :columns="columns"
       row-key="name"
       :hide-pagination="true"
@@ -42,17 +42,21 @@ const $q = useQuasar();
 const itemStore = useItemStore();
 const statusStore = useStatusStore();
 // const page = ref(1);
-const emit = defineEmits(['change-edit-pop-up'])
+const emit = defineEmits(['change-edit-pop-up', 'refresh-todo-list'])
 
 const pagination = {
   page: 1,
   rowsPerPage: 0
 }
-// temp
-const selectModel = ref(null);
+const selectModel = ref([]);
 
+const toDoItems = computed(() => {
+  if(selectModel.value.length > 0) {
+    return itemStore.$state.items.filter((i) => selectModel.value.some((s) => s === i.statusName))
+  }
+  return itemStore.$state.items;
+})
 
-// temp
 const columns = [
   {
     name: 'date',
@@ -97,16 +101,8 @@ const columns = [
   }
 ]
 
-const getItem = async () => {
-  const res = await axios.get('/item/find')
-
-  if(res.status === 200) {
-    itemStore.setItems(res.data.data);
-  }
-}
-
 const confirm = (itemId) => {
-  console.log(selectModel)
+  console.log(selectModel.value)
   $q.dialog({
     ok: {
       color: 'negative'
@@ -128,19 +124,14 @@ const deleteItem = async (itemId) => {
   const res = await axios.post(`/item/delete/${itemId}`)
   if(res.status === 204){
     alertDelete()
-    await getItem()
+    emit('refresh-todo-list')
   }
 }
 
 const editItem = async (item) => {
-  await emit(`change-edit-pop-up`, item)
+  emit(`change-edit-pop-up`, item)
 }
 
-defineExpose({getItem})
-
-onMounted( ()=> {
-  getItem();
-})
 </script>
 
 <style lang="sass">

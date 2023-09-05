@@ -62,7 +62,7 @@
       <item-edit-page v-model="editPopUpOpen" @change-edit-pop-up="changeEditPopUp" @refresh-todo-list="refreshTodoList" :nowItem="nowItem"/>
       <status-input-page v-model="statusPopUpOpen" @refresh-status-list="refreshStatusList" @change-status-pop-up="changeStatusPopUp"/>
       <status-delete-page v-model="statusDeletePopUpOpen" @refresh-status-list="refreshStatusList" @change-delete-status-pop-up="changeDeleteStatusPopUp" />
-      <to-do-list v-if="value === true" ref="todoRef" @change-edit-pop-up="changeEditPopUp"/>
+      <to-do-list v-if="value === true" ref="todoRef" @refresh-todo-list="refreshTodoList" @change-edit-pop-up="changeEditPopUp"/>
       <board-page v-if="value === false"/>
     </q-page-container>
   </q-layout>
@@ -77,25 +77,24 @@ import router from "../router/index.js";
 import ItemEditPage from "../components/ItemEditPage.vue";
 import BoardPage from "../components/BoardPage.vue";
 import StatusDeletePage from "../components/StatusDeletePage.vue";
+import axios from "../utils/axios.js";
+import {useItemStore} from "../store/ItemStore.js";
+
+const itemStore = useItemStore();
 
 const {cookies} = useCookies();
 
 const $q = useQuasar();
 
 const addPopUpOpen = ref(false);
-
 const editPopUpOpen = ref(false);
-
 const statusPopUpOpen = ref(false);
-
 const statusDeletePopUpOpen = ref(false);
-
 const leftDrawerOpen = ref(false);
 
 let nowItem = ref();
 
 const todoRef = ref();
-
 const statusRef = ref();
 
 const value = ref(true);
@@ -122,12 +121,24 @@ const changeDeleteStatusPopUp = () => {
 }
 
 const refreshTodoList = () => {
-  todoRef.value.getItem();
+  getItem();
 }
 
 const refreshStatusList = () => {
   statusRef.value.getStatuses();
 }
+
+const getItem = async () => {
+  const res = await axios.get('/item/find')
+
+  if(res.status === 200) {
+    itemStore.setItems(res.data.data);
+  }
+}
+
+onMounted( ()=> {
+  getItem();
+})
 
 const logout = async () => {
   console.log('logout')
