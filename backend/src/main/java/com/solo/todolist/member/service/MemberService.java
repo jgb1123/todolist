@@ -9,7 +9,6 @@ import com.solo.todolist.security.jwt.Tokens;
 import com.solo.todolist.security.utils.CustomAuthorityUtils;
 import com.solo.todolist.status.entity.Status;
 import com.solo.todolist.status.repository.StatusRepository;
-import com.solo.todolist.status.service.StatusService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -27,9 +26,10 @@ public class MemberService {
 
     public Member createMember(Member member) {
         List<String> roles = customAuthorityUtils.createRoles(member.getEmail());
-        Status noneStatus = Status.builder().statusName("None").priority(1L).build();
+
+        Status noneStatus = createAndSaveDefaultStatus();
+
         member.addStatus(noneStatus);
-        statusRepository.save(noneStatus);
         member.changeRoles(roles);
         return memberRepository.save(member);
     }
@@ -52,10 +52,16 @@ public class MemberService {
         return memberRepository.findByEmail(email)
                 .orElseThrow(() -> new BusinessLogicException(ExceptionCode.MEMBER_NOT_FOUND));
     }
+
     public Tokens loginMember(String email, String password) {
-        Member foundMember = memberRepository.findByEmailAndPassword(email, password)
+        memberRepository.findByEmailAndPassword(email, password)
                 .orElseThrow(() -> new BusinessLogicException(ExceptionCode.MEMBER_NOT_FOUND));
         List<String> authorities = customAuthorityUtils.createRoles(email);
         return jwtTokenizer.generateTokens(email, authorities);
+    }
+    private Status createAndSaveDefaultStatus() {
+        Status noneStatus = Status.builder().statusName("None").priority(1L).build();
+        statusRepository.save(noneStatus);
+        return noneStatus;
     }
 }

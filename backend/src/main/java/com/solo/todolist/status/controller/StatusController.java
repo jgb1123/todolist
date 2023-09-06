@@ -43,15 +43,6 @@ public class StatusController {
         return new ResponseEntity<>(new SingleResponseDTO<>(statusResponseDTO), HttpStatus.OK);
     }
 
-//    @GetMapping("/find")
-//    public ResponseEntity<MultiResponseDTO<StatusResponseDTO>> getStatuses(@AuthenticationPrincipal String email,
-//                                                                           @PageableDefault(page = 1, size = 1000, sort = "priority", direction = Sort.Direction.ASC) Pageable pageable) {
-//        Page<Status> statusPage = statusService.findStatuses(email, pageable);
-//        List<Status> statuses = statusPage.getContent();
-//        List<StatusResponseDTO> statusResponseDTOs = statusMapper.statusesToStatusResponseDTOs(statuses);
-//        return new ResponseEntity<>(new MultiResponseDTO<>(statusResponseDTOs, statusPage), HttpStatus.OK);
-//    }
-
     @GetMapping("/find")
     public ResponseEntity<MultiResponseDTO<StatusItemsResponseDTO>> getStatusesAndItems(@AuthenticationPrincipal String email,
                                                                                         @PageableDefault(page = 1, size = 1000, sort = "priority", direction = Sort.Direction.ASC) Pageable pageable) {

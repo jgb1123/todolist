@@ -31,12 +31,12 @@ public class ItemService {
         Member foundMember = memberService.getVerifiedMember(email);
         if(StringUtils.hasText(statusName)) {
             Status foundStatus = statusService.getVerifiedStatusByStatusName(statusName, foundMember);
-            item.changeStatus(foundStatus);
+            item.setStatus(foundStatus);
         } else {
             Status foundStatus = statusService.getVerifiedStatusByStatusName("None", foundMember);
-            item.changeStatus(foundStatus);
+            item.setStatus(foundStatus);
         }
-        item.changeMember(foundMember);
+        item.setMember(foundMember);
         return itemRepository.save(item);
     }
 
@@ -54,7 +54,7 @@ public class ItemService {
         Item foundItem = getVerifiedItem(itemId);
         if(StringUtils.hasText(statusName)) {
             Status foundStatus = statusService.getVerifiedStatusByStatusName(statusName, foundItem.getMember());
-            foundItem.changeStatus(foundStatus);
+            foundItem.setStatus(foundStatus);
         }
         foundItem.changeItemInfo(item);
         return foundItem;
@@ -67,9 +67,5 @@ public class ItemService {
     public Item getVerifiedItem(Long itemId) {
         return itemRepository.findById(itemId)
                 .orElseThrow(() -> new BusinessLogicException(ExceptionCode.ITEM_NOT_FOUND));
-    }
-
-    public List<Item> getVerifiedItemsByStatus(Status status) {
-        return itemRepository.findAllByStatus(status);
     }
 }

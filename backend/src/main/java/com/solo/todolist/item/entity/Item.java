@@ -53,7 +53,7 @@ public class Item {
         if(item.getTargetTime() != null) this.targetTime = item.getTargetTime();
     }
 
-    public void changeMember(Member member) {
+    public void setMember(Member member) {
         if(this.member != null) {
             this.member.getItems().remove(this);
         }
@@ -63,7 +63,7 @@ public class Item {
         }
     }
 
-    public void changeStatus(Status status) {
+    public void setStatus(Status status) {
         if(this.status != null) {
             this.status.getItems().remove(this);
         }

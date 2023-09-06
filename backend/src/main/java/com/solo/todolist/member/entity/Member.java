@@ -60,14 +60,14 @@ public class Member implements UserDetails {
     public void addItem(Item item) {
         this.items.add(item);
         if(item.getMember() != this) {
-            item.changeMember(this);
+            item.setMember(this);
         }
     }
 
     public void addStatus(Status status) {
         this.statuses.add(status);
         if(status.getMember() != this) {
-            status.changeMember(this);
+            status.setMember(this);
         }
     }
 

@@ -56,7 +56,7 @@ public class Status {
         this.statusName = statusName;
 
     }
-    public void changeMember(Member member) {
+    public void setMember(Member member) {
         if(this.member != null) {
             this.member.getStatuses().remove(this);
         }
@@ -69,7 +69,7 @@ public class Status {
     public void addItem(Item item) {
         this.items.add(item);
         if(item.getStatus() != this) {
-            item.changeStatus(this);
+            item.setStatus(this);
         }
     }
 

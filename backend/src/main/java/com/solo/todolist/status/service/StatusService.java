@@ -4,7 +4,6 @@ import com.solo.todolist.exception.BusinessLogicException;
 import com.solo.todolist.exception.ExceptionCode;
 import com.solo.todolist.item.entity.Item;
 import com.solo.todolist.item.repository.ItemRepository;
-import com.solo.todolist.item.service.ItemService;
 import com.solo.todolist.member.entity.Member;
 import com.solo.todolist.member.service.MemberService;
 import com.solo.todolist.status.entity.Status;
@@ -17,7 +16,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @Transactional
@@ -30,10 +28,10 @@ public class StatusService {
 
     public Status createStatus(Status status, String email) {
         Member foundMember = memberService.getVerifiedMember(email);
-        if(statusRepository.findByStatusNameAndMember(status.getStatusName(), foundMember).isPresent()) {
-            throw new BusinessLogicException(ExceptionCode.STATUS_EXISTS);
-        }
-        status.changeMember(foundMember);
+
+        checkDuplicatedStatusName(status, foundMember);
+        status.setMember(foundMember);
+
         Status savedStore = statusRepository.save(status);
         savedStore.setFirstPriority(savedStore.getStatusId());
         return savedStore;
@@ -58,8 +56,10 @@ public class StatusService {
     public void changePriority(Long fromStatusId, Long toStatusId) {
         Status fromStatus = getVerifiedStatus(fromStatusId);
         Status toStatus = getVerifiedStatus(toStatusId);
+
         Long fromPriority = fromStatus.getPriority();
         Long toPriority = toStatus.getPriority();
+
         fromStatus.changePriority(toPriority);
         toStatus.changePriority(fromPriority);
     }
@@ -70,7 +70,7 @@ public class StatusService {
         Status noneStatus = getVerifiedStatusByStatusName("None", foundMember);
         List<Item> foundItems = itemRepository.findAllByStatus(foundStatus);
         for (Item foundItem : foundItems) {
-            foundItem.changeStatus(noneStatus);
+            foundItem.setStatus(noneStatus);
         }
         statusRepository.delete(foundStatus);
     }
@@ -83,5 +83,11 @@ public class StatusService {
     public Status getVerifiedStatusByStatusName(String statusName, Member member) {
         return statusRepository.findByStatusNameAndMember(statusName, member)
                 .orElseThrow(() -> new BusinessLogicException(ExceptionCode.STATUS_NOT_FOUND));
+    }
+
+    private void checkDuplicatedStatusName(Status status, Member foundMember) {
+        if(statusRepository.findByStatusNameAndMember(status.getStatusName(), foundMember).isPresent()) {
+            throw new BusinessLogicException(ExceptionCode.STATUS_EXISTS);
+        }
     }
 }
