@@ -11,6 +11,7 @@ import com.solo.todolist.status.entity.Status;
 import com.solo.todolist.status.repository.StatusRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -23,6 +24,7 @@ public class MemberService {
     private final StatusRepository statusRepository;
     private final CustomAuthorityUtils customAuthorityUtils;
     private final JwtTokenizer jwtTokenizer;
+    private final BCryptPasswordEncoder encoder;
 
     public Member createMember(Member member) {
         checkDuplicatedEmail(member);
@@ -30,6 +32,7 @@ public class MemberService {
 
         Status noneStatus = createAndSaveDefaultStatus();
 
+        member.setEncodingPassword(encoder.encode(member.getPassword()));
         member.addStatus(noneStatus);
         member.changeRoles(roles);
         return memberRepository.save(member);
@@ -55,10 +58,13 @@ public class MemberService {
     }
 
     public Tokens loginMember(String email, String password) {
-        memberRepository.findByEmailAndPassword(email, password)
-                .orElseThrow(() -> new BusinessLogicException(ExceptionCode.MEMBER_NOT_FOUND));
-        List<String> authorities = customAuthorityUtils.createRoles(email);
-        return jwtTokenizer.generateTokens(email, authorities);
+        Member foundMember = getVerifiedMember(email);
+        if(encoder.matches(password, foundMember.getPassword())) {
+            List<String> authorities = customAuthorityUtils.createRoles(email);
+            return jwtTokenizer.generateTokens(email, authorities);
+        } else {
+            throw new BusinessLogicException(ExceptionCode.LOGIN_FAILED);
+        }
     }
 
     private Status createAndSaveDefaultStatus() {

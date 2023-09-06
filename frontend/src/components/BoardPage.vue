@@ -1,8 +1,8 @@
 <template>
   <div id="kanban">
     <div class="justify-center">
-      <div class="flex overflow-x-scroll py-12">
-        <div class="flex" @drag="ondrop($event)" @dragenter.prevent @dragover.prevent>
+      <div class="flex">
+        <div class="flex-container py-12 px-12" @drag="ondrop($event)" @dragenter.prevent @dragover.prevent>
           <div
               v-for="(status, i) in statusStore.$state.statuses"
               :key="i"
@@ -52,6 +52,12 @@ const dragDrop = async (event, endStatusId) => {
 </script>
 
 <style scoped>
+.flex-container {
+  display: flex;
+  overflow-x: scroll;
+  width: 100%
+
+}
 .column-width {
   min-width: 320px;
   width: 320px;

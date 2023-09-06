@@ -57,6 +57,10 @@ public class Member implements UserDetails {
         if(member.getPassword() != null) this.password = member.getPassword();
     }
 
+    public void setEncodingPassword(String password) {
+        this.password = password;
+    }
+
     public void addItem(Item item) {
         this.items.add(item);
         if(item.getMember() != this) {

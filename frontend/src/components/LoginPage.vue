@@ -30,7 +30,7 @@
 <script setup>
 import axios from "../utils/axios.js"
 import { useCookies } from "vue3-cookies";
-
+const $q = useQuasar();
 const { cookies } = useCookies()
 const data = ref({
   email: "",
@@ -39,15 +39,25 @@ const data = ref({
 const router = useRouter();
 
 const login = async () => {
-  const res = await axios.post('/auth/login', {
-    email: data.value.email,
-    password: data.value.password
-  });
+  try {
+    const res = await axios.post('/auth/login', {
+      email: data.value.email,
+      password: data.value.password
+    });
 
-  if (res.status === 200) {
-    setCookies(res);
-    await router.push({name: 'home'})
+    if (res.status === 200) {
+      setCookies(res);
+      await router.push({name: 'home'})
+    }
+  } catch (e) {
+    alertDenied()
   }
+}
+
+const alertDenied = () => {
+  $q.dialog({
+    message: '아이디와 비밀번호를 확인해주세요.'
+  })
 }
 
 const email_rules = (val) => {
