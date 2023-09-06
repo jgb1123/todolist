@@ -75,10 +75,7 @@ const add = async () => {
     alertCreate()
     emit('change-add-pop-up')
     emit('refresh-todo-list')
-    data.value.title = "";
-    data.value.content = "";
-    data.value.targetTime = "";
-    data.value.statusName = "";
+    resetData();
   }
 }
 
@@ -86,6 +83,13 @@ const alertCreate = () => {
   $q.dialog({
     message: '일정이 등록되었습니다.'
   })
+}
+
+const resetData = () => {
+  data.value.title = "";
+  data.value.content = "";
+  data.value.targetTime = "";
+  data.value.statusName = "";
 }
 </script>
 

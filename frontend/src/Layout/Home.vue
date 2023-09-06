@@ -141,7 +141,6 @@ onMounted( ()=> {
 })
 
 const logout = async () => {
-  console.log('logout')
   cookies.remove('accessToken')
   cookies.remove('refreshToken')
   await logoutAlert()

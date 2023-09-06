@@ -7,6 +7,7 @@
         use-chips
         multiple
         input-debounce="0"
+        label="status"
         :options="statusStore.$state.statusNames"
         style="width: 500px"
     />

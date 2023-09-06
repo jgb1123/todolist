@@ -1,13 +1,12 @@
 <template>
   <div id="kanban">
-    <div class="flex justify-center">
-
-      <div class="min-h-screen flex overflow-x-scroll py-12 flex">
+    <div class="justify-center">
+      <div class="flex overflow-x-scroll py-12">
         <div class="flex" @drag="ondrop($event)" @dragenter.prevent @dragover.prevent>
           <div
               v-for="(status, i) in statusStore.$state.statuses"
               :key="i"
-              class="bg-light-blue-2 rounded-lg px-3 py-3 column-width rounded mr-4 mt-3 cursor-move drag-el"
+              class="bg-light-blue-2 rounded-lg px-3 py-3 column-width rounded mr-4 mt-3 cursor-move"
               draggable="true"
               @dragstart="startDrag($event, status.statusId)"
               @drop="dragDrop($event, status.statusId)"
@@ -50,8 +49,6 @@ const dragDrop = async (event, endStatusId) => {
     await statusStore.getStatuses()
   }
 }
-
-
 </script>
 
 <style scoped>
@@ -59,14 +56,4 @@ const dragDrop = async (event, endStatusId) => {
   min-width: 320px;
   width: 320px;
 }
-.drag-el {
-  background-color: aqua;
-  color: white;
-  padding: 5px;
-  margin-bottom: 10px;
-}
-.drag-el:nth-last-of-type(1) {
-  margin-bottom: 0;
-}
-
 </style>

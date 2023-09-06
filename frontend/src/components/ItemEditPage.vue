@@ -72,11 +72,15 @@ const edit = async () => {
     await alertChange()
     await emit('change-edit-pop-up', 0)
     await emit('refresh-todo-list')
-    data.value.title = "";
-    data.value.content = "";
-    data.value.targetTime = "";
-    data.value.statusName = "";
+    resetData();
   }
+}
+
+const resetData = () => {
+  data.value.title = "";
+  data.value.content = "";
+  data.value.targetTime = "";
+  data.value.statusName = "";
 }
 
 const alertChange = () => {

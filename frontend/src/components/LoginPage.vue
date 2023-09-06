@@ -37,6 +37,7 @@ const data = ref({
   password: ""
 })
 const router = useRouter();
+
 const login = async () => {
   const res = await axios.post('/auth/login', {
     email: data.value.email,
@@ -44,8 +45,7 @@ const login = async () => {
   });
 
   if (res.status === 200) {
-    cookies.set('accessToken', res.data.accessToken)
-    cookies.set('refreshToken', res.data.refreshToken)
+    setCookies(res);
     await router.push({name: 'home'})
   }
 }
@@ -73,6 +73,11 @@ const password_rules = (val) => {
   if(!a) {
     return '알맞은 비밀번호를 입력해주세요.'
   }
+}
+
+const setCookies = (res) => {
+  cookies.set('accessToken', res.data.accessToken)
+  cookies.set('refreshToken', res.data.refreshToken)
 }
 
 </script>
