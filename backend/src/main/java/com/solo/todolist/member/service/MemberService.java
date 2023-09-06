@@ -25,6 +25,7 @@ public class MemberService {
     private final JwtTokenizer jwtTokenizer;
 
     public Member createMember(Member member) {
+        checkDuplicatedEmail(member);
         List<String> roles = customAuthorityUtils.createRoles(member.getEmail());
 
         Status noneStatus = createAndSaveDefaultStatus();
@@ -59,9 +60,15 @@ public class MemberService {
         List<String> authorities = customAuthorityUtils.createRoles(email);
         return jwtTokenizer.generateTokens(email, authorities);
     }
+
     private Status createAndSaveDefaultStatus() {
         Status noneStatus = Status.builder().statusName("None").priority(1L).build();
         statusRepository.save(noneStatus);
         return noneStatus;
+    }
+    private void checkDuplicatedEmail(Member member) {
+        if(memberRepository.findByEmail(member.getEmail()).isPresent()) {
+            throw new BusinessLogicException(ExceptionCode.MEMBER_EXISTS);
+        }
     }
 }

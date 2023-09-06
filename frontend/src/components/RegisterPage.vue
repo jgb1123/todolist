@@ -40,21 +40,30 @@ const data = ref({
 const router = useRouter();
 
 const register = async () => {
-  const res = await axios.post('/member/create', {
-    email: data.value.email,
-    password: data.value.password,
-    name: data.value.name
-  });
+  try {
+    const res = await axios.post('/member/create', {
+      email: data.value.email,
+      password: data.value.password,
+      name: data.value.name
+    });
 
-  if(res.status === 201) {
-    await router.push({name: 'login'})
-    await alertComplete()
+    if(res.status === 201) {
+      await router.push({name: 'login'})
+      await alertComplete()
+    }
+  } catch (e) {
+    alertDenied()
   }
 }
 
 const alertComplete = () => {
   $q.dialog({
     message: '회원가입이 완료되었습니다.'
+  })
+}
+const alertDenied = () => {
+  $q.dialog({
+    message: '중복된 이메일입니다.'
   })
 }
 

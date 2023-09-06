@@ -6,7 +6,7 @@
           <div
               v-for="(status, i) in statusStore.$state.statuses"
               :key="i"
-              class="bg-light-blue-2 rounded-lg px-3 py-3 column-width rounded mr-4 mt-3 cursor-move"
+              class="bg-light-blue-2 rounded-lg px-3 py-3 column-width mr-4 mt-3 cursor-move"
               draggable="true"
               @dragstart="startDrag($event, status.statusId)"
               @drop="dragDrop($event, status.statusId)"
