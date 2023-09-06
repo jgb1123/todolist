@@ -29,8 +29,6 @@
   </div>
 </template>
 
-
-
 <script setup>
 import axios from '../utils/axios.js';
 import dayjs from "dayjs";
@@ -41,13 +39,13 @@ const router = useRouter();
 const $q = useQuasar();
 const itemStore = useItemStore();
 const statusStore = useStatusStore();
-// const page = ref(1);
 const emit = defineEmits(['change-edit-pop-up', 'refresh-todo-list'])
 
 const pagination = {
   page: 1,
   rowsPerPage: 0
 }
+
 const selectModel = ref([]);
 
 const toDoItems = computed(() => {
@@ -57,6 +55,37 @@ const toDoItems = computed(() => {
   return itemStore.$state.items;
 })
 
+
+const confirm = (itemId) => {
+  console.log(selectModel.value)
+  $q.dialog({
+    ok: {
+      color: 'negative'
+    },
+    cancel: true,
+    message: '해당 일정을 정말 삭제하시겠습니까?',
+  }).onOk(() => {
+    deleteItem(itemId)
+  })
+}
+
+const alertDelete = () => {
+  $q.dialog({
+    message: '삭제되었습니다.'
+  })
+}
+
+const deleteItem = async (itemId) => {
+  const res = await axios.post(`/item/delete/${itemId}`)
+  if(res.status === 204){
+    alertDelete()
+    emit('refresh-todo-list')
+  }
+}
+
+const editItem = async (item) => {
+  emit(`change-edit-pop-up`, item)
+}
 const columns = [
   {
     name: 'date',
@@ -100,37 +129,10 @@ const columns = [
     label: 'Action'
   }
 ]
-
-const confirm = (itemId) => {
-  console.log(selectModel.value)
-  $q.dialog({
-    ok: {
-      color: 'negative'
-    },
-    cancel: true,
-    message: '해당 일정을 정말 삭제하시겠습니까?',
-  }).onOk(() => {
-    deleteItem(itemId)
-  })
-}
-
-const alertDelete = () => {
-  $q.dialog({
-    message: '삭제되었습니다.'
-  })
-}
-
-const deleteItem = async (itemId) => {
-  const res = await axios.post(`/item/delete/${itemId}`)
-  if(res.status === 204){
-    alertDelete()
-    emit('refresh-todo-list')
-  }
-}
-
-const editItem = async (item) => {
-  emit(`change-edit-pop-up`, item)
-}
+onMounted(async () => {
+  await statusStore.getStatuses();
+  selectModel.value = statusStore.statusNames
+})
 
 </script>
 

@@ -1,13 +1,16 @@
+import axios from "../utils/axios.js";
+
 export const useStatusStore = defineStore('statuses', () => {
     const statuses = ref([]);
     const statusNames = ref([]);
 
-    const setStatuses = (inputStatuses) => {
-        statuses.value = inputStatuses
-    }
-    const setStatusNames = (inputStatusNames) => {
-        statusNames.value = inputStatusNames
+    const getStatuses = async () => {
+        const res = await axios.get('/status/find')
+        if(res.status === 200) {
+            statuses.value = res.data.data;
+            statusNames.value = res.data.data.map(s => s.statusName)
+        }
     }
 
-    return {statuses, statusNames, setStatuses, setStatusNames}
+    return {statuses, statusNames, getStatuses}
 })

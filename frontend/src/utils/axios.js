@@ -49,8 +49,6 @@ const getNewTokensAndAgainRequest = async (config) => {
         }
     } catch(err) {
         await router.push({name: 'login'})
-        await alert("로그인이 필요합니다.")
-
     }
 }
 

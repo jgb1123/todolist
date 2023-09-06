@@ -36,7 +36,7 @@ const remove = async () => {
   if(res.status === 204) {
     alertRemove()
     emit('change-delete-status-pop-up')
-    emit('refresh-status-list')
+    await statusStore.getStatuses()
     data.value.statusName ="";
   }
 }

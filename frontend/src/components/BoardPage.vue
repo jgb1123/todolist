@@ -3,17 +3,14 @@
     <div class="flex justify-center">
 
       <div class="min-h-screen flex overflow-x-scroll py-12 flex">
-        <draggable
-          class="list-group flex"
-          :list="statusStore.$state.statuses"
-          group="people"
-          @change="log"
-          itemKey="statusId"
-        >
+        <div class="flex" @drag="ondrop($event)" @dragenter.prevent @dragover.prevent>
           <div
-            v-for="(status, i) in statusStore.$state.statuses"
-            :key="i"
-            class="bg-light-blue-2 rounded-lg px-3 py-3 column-width rounded mr-4 mt-3 cursor-move"
+              v-for="(status, i) in statusStore.$state.statuses"
+              :key="i"
+              class="bg-light-blue-2 rounded-lg px-3 py-3 column-width rounded mr-4 mt-3 cursor-move drag-el"
+              draggable="true"
+              @dragstart="startDrag($event, status.statusId)"
+              @drop="dragDrop($event, status.statusId)"
           >
             <p class="text-gray-700 font-semi-bold font-sans tracking-wide text-sm">{{ status.statusName }}</p>
             <item-card
@@ -23,7 +20,7 @@
                 class="mt-3"
             ></item-card>
           </div>
-        </draggable>
+        </div>
       </div>
     </div>
   </div>
@@ -32,13 +29,28 @@
 <script setup>
 import ItemCard from "./ItemCard.vue";
 import {useStatusStore} from "../store/StatusStore.js";
-import { VueDraggableNext as draggable } from "vue-draggable-next";
+import axios from "../utils/axios.js";
 
 const statusStore = useStatusStore();
 
-const log = (event) => {
-  console.log(event)
+const ondrop = (event) => {
+  // console.log(event)
 }
+
+const startDrag = (event, startStatusId) => {
+  event.dataTransfer.setData("startStatusId", startStatusId)
+  event.dataTransfer.dropEffect = 'move'
+  event.dataTransfer.effectAllowed = 'move'
+}
+
+const dragDrop = async (event, endStatusId) => {
+  const startStatusId = event.dataTransfer.getData("startStatusId")
+  const res = await axios.post(`/status/swap/${startStatusId}/${endStatusId}`)
+  if(res.status === 200) {
+    await statusStore.getStatuses()
+  }
+}
+
 
 </script>
 
@@ -47,9 +59,14 @@ const log = (event) => {
   min-width: 320px;
   width: 320px;
 }
-.ghost-card {
-  opacity: 0.5;
-  background: #F7FAFC;
-  border: 1px solid #4299e1;
+.drag-el {
+  background-color: aqua;
+  color: white;
+  padding: 5px;
+  margin-bottom: 10px;
 }
+.drag-el:nth-last-of-type(1) {
+  margin-bottom: 0;
+}
+
 </style>

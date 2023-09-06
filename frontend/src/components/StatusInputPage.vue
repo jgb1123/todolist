@@ -17,7 +17,9 @@
 
 <script setup>
 import axios from "../utils/axios.js";
+import {useStatusStore} from "../store/StatusStore.js";
 
+const statusStore = useStatusStore();
 const $q = useQuasar()
 const data = ref({
   statusName: ""
@@ -34,7 +36,7 @@ const add = async () => {
     if(res.status === 201) {
       alertCreate()
       emit('change-status-pop-up')
-      emit('refresh-status-list')
+      await statusStore.getStatuses()
       data.value.statusName ="";
     }
   } catch (e) {

@@ -82,19 +82,6 @@ const add = async () => {
   }
 }
 
-const getStatuses = async () => {
-  const res = await axios.get('/status/find')
-  if(res.status === 200) {
-    statusStore.setStatuses(res.data.data)
-    statusStore.setStatusNames(res.data.data.map(s => s.statusName));
-  }
-}
-onMounted(() => {
-  getStatuses()
-})
-
-defineExpose({getStatuses})
-
 const alertCreate = () => {
   $q.dialog({
     message: '일정이 등록되었습니다.'

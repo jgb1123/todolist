@@ -63,7 +63,7 @@
       <status-input-page v-model="statusPopUpOpen" @refresh-status-list="refreshStatusList" @change-status-pop-up="changeStatusPopUp"/>
       <status-delete-page v-model="statusDeletePopUpOpen" @refresh-status-list="refreshStatusList" @change-delete-status-pop-up="changeDeleteStatusPopUp" />
       <to-do-list v-if="value === true" ref="todoRef" @refresh-todo-list="refreshTodoList" @change-edit-pop-up="changeEditPopUp"/>
-      <board-page v-if="value === false"/>
+      <board-page v-if="value === false" @refresh-status-list="refreshStatusList" />
     </q-page-container>
   </q-layout>
 </template>
