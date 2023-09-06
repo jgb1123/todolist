@@ -53,7 +53,7 @@ const toDoItems = computed(() => {
   if(selectModel.value.length > 0) {
     return itemStore.$state.items.filter((i) => selectModel.value.some((s) => s === i.statusName))
   }
-  return itemStore.$state.items;
+  return [];
 })
 
 

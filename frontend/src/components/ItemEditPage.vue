@@ -70,8 +70,8 @@ const edit = async () => {
   })
   if(res.status === 200) {
     await alertChange()
-    await emit('change-edit-pop-up', 0)
-    await emit('refresh-todo-list')
+    emit('change-edit-pop-up', 0)
+    emit('refresh-todo-list')
     resetData();
   }
 }
