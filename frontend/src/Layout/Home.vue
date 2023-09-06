@@ -59,11 +59,11 @@
         <span>Table</span>
       </div>
       <item-input-page ref="statusRef" v-model="addPopUpOpen" @change-add-pop-up="changeAddPopUp" @refresh-todo-list="refreshTodoList"/>
-      <item-edit-page v-model="editPopUpOpen" @change-edit-pop-up="changeEditPopUp" @refresh-todo-list="refreshTodoList" :nowItem="nowItem"/>
-      <status-input-page v-model="statusPopUpOpen" @refresh-status-list="refreshStatusList" @change-status-pop-up="changeStatusPopUp"/>
-      <status-delete-page v-model="statusDeletePopUpOpen" @refresh-status-list="refreshStatusList" @change-delete-status-pop-up="changeDeleteStatusPopUp" />
+      <item-edit-page ref="editRef" v-model="editPopUpOpen" @change-edit-pop-up="changeEditPopUp" @refresh-todo-list="refreshTodoList" :nowItem="nowItem"/>
+      <status-input-page v-model="statusPopUpOpen" @change-status-pop-up="changeStatusPopUp"/>
+      <status-delete-page v-model="statusDeletePopUpOpen" @change-delete-status-pop-up="changeDeleteStatusPopUp" />
       <to-do-list v-if="value === true" ref="todoRef" @refresh-todo-list="refreshTodoList" @change-edit-pop-up="changeEditPopUp"/>
-      <board-page v-if="value === false" @refresh-status-list="refreshStatusList" />
+      <board-page v-if="value === false" />
     </q-page-container>
   </q-layout>
 </template>
@@ -96,6 +96,7 @@ let nowItem = ref();
 
 const todoRef = ref();
 const statusRef = ref();
+const editRef = ref();
 
 const value = ref(true);
 
@@ -110,6 +111,7 @@ const changeAddPopUp = () => {
 const changeEditPopUp = (item) => {
   editPopUpOpen.value = !editPopUpOpen.value;
   nowItem.value = item
+  editRef.value.getNowItems(item)
 }
 
 const changeStatusPopUp = () => {
@@ -122,10 +124,6 @@ const changeDeleteStatusPopUp = () => {
 
 const refreshTodoList = () => {
   getItem();
-}
-
-const refreshStatusList = () => {
-  statusRef.value.getStatuses();
 }
 
 const getItem = async () => {
