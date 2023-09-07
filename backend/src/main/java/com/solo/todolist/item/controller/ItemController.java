@@ -8,6 +8,7 @@ import com.solo.todolist.item.dto.ItemResponseDTO;
 import com.solo.todolist.item.entity.Item;
 import com.solo.todolist.item.mapper.ItemMapper;
 import com.solo.todolist.item.service.ItemService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -31,7 +32,7 @@ public class ItemController {
     private final ItemService itemService;
 
     @PostMapping("/create")
-    public ResponseEntity<SingleResponseDTO<ItemResponseDTO>> postItem(@RequestBody ItemPostDTO itemPostDTO,
+    public ResponseEntity<SingleResponseDTO<ItemResponseDTO>> postItem(@Valid @RequestBody ItemPostDTO itemPostDTO,
                                       @AuthenticationPrincipal String email) {
         Item item = itemMapper.itemPostDTOToItem(itemPostDTO);
         Item savedItem = itemService.createItem(item, email, itemPostDTO.getStatusName());

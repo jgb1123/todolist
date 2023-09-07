@@ -18,7 +18,7 @@ public class ItemMapper {
     public Item itemPostDTOToItem(ItemPostDTO itemPostDTO) {
         return Item.builder()
                 .title(itemPostDTO.getTitle())
-                .content(itemPostDTO.getContent())
+                .content((itemPostDTO.getContent().isEmpty()) ? " " : itemPostDTO.getContent())
                 .targetTime(itemPostDTO.getTargetTime())
                 .build();
     }

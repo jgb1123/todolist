@@ -1,5 +1,6 @@
 package com.solo.todolist.status.mapper;
 
+import com.solo.todolist.item.dto.ItemResponseDTO;
 import com.solo.todolist.item.mapper.ItemMapper;
 import com.solo.todolist.status.dto.StatusItemsResponseDTO;
 import com.solo.todolist.status.dto.StatusPatchDTO;
@@ -9,6 +10,8 @@ import com.solo.todolist.status.entity.Status;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -38,11 +41,12 @@ public class StatusMapper {
     }
 
     public StatusItemsResponseDTO statusToStatusItemsResponseDto(Status status) {
+        List<ItemResponseDTO> itemResponseDTOs = getSortedItemResponseDTOsByTargetTime(status);
         return StatusItemsResponseDTO.builder()
                 .statusId(status.getStatusId())
                 .statusName(status.getStatusName())
                 .priority(status.getPriority())
-                .items(itemMapper.itemsToItemResponseDTOs(status.getItems()))
+                .items(itemResponseDTOs)
                 .build();
     }
 
@@ -51,5 +55,11 @@ public class StatusMapper {
                 .stream()
                 .map(this::statusToStatusItemsResponseDto)
                 .collect(Collectors.toList());
+    }
+
+    private List<ItemResponseDTO> getSortedItemResponseDTOsByTargetTime(Status status) {
+        List<ItemResponseDTO> itemResponseDTOs = itemMapper.itemsToItemResponseDTOs(status.getItems());
+        itemResponseDTOs.sort(Comparator.comparing(ItemResponseDTO::getTargetTime));
+        return itemResponseDTOs;
     }
 }

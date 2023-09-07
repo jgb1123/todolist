@@ -1,5 +1,6 @@
 package com.solo.todolist.exception;
 
+import io.jsonwebtoken.ExpiredJwtException;
 import jakarta.validation.ConstraintViolationException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -55,6 +56,15 @@ public class GlobalExceptionAdvice {
             MissingServletRequestParameterException e) {
 
         return ErrorResponse.of(HttpStatus.BAD_REQUEST,
+                e.getMessage());
+    }
+
+    @ExceptionHandler
+    @ResponseStatus(HttpStatus.PRECONDITION_FAILED)
+    public ErrorResponse handleExpiredJwtException(
+            ExpiredJwtException e) {
+
+        return ErrorResponse.of(HttpStatus.PRECONDITION_FAILED,
                 e.getMessage());
     }
 
