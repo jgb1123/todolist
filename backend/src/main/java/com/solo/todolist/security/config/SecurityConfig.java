@@ -43,7 +43,6 @@ public class SecurityConfig {
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .formLogin(AbstractHttpConfigurer::disable)
                 .httpBasic(AbstractHttpConfigurer::disable)
-                .exceptionHandling(c -> c.authenticationEntryPoint(memberAuthenticationEntryPoint).accessDeniedHandler(memberAccessDeniedHandler))
                 .addFilterBefore(new JwtVerificationFilter(jwtTokenizer, customAuthorityUtils), UsernamePasswordAuthenticationFilter.class)
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers("/api/v1/auth/refresh").anonymous()
