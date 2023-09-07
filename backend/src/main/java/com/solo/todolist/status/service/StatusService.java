@@ -65,13 +65,12 @@ public class StatusService {
     }
 
     public void deleteStatus(String statusName, String email) {
+        checkIfStatusNameIsNone(statusName);
+
         Member foundMember = memberService.getVerifiedMember(email);
         Status foundStatus = getVerifiedStatusByStatusName(statusName, foundMember);
-        Status noneStatus = getVerifiedStatusByStatusName("None", foundMember);
-        List<Item> foundItems = itemRepository.findAllByStatus(foundStatus);
-        for (Item foundItem : foundItems) {
-            foundItem.setStatus(noneStatus);
-        }
+
+        changeStatusToNone(foundMember, foundStatus);
         statusRepository.delete(foundStatus);
     }
 
@@ -88,6 +87,20 @@ public class StatusService {
     private void checkDuplicatedStatusName(Status status, Member foundMember) {
         if(statusRepository.findByStatusNameAndMember(status.getStatusName(), foundMember).isPresent()) {
             throw new BusinessLogicException(ExceptionCode.STATUS_EXISTS);
+        }
+    }
+
+    private static void checkIfStatusNameIsNone(String statusName) {
+        if(statusName.equals("None")) {
+            throw new BusinessLogicException(ExceptionCode.STATUS_CANNOT_DELETE);
+        }
+    }
+
+    private void changeStatusToNone(Member foundMember, Status foundStatus) {
+        Status noneStatus = getVerifiedStatusByStatusName("None", foundMember);
+        List<Item> foundItems = itemRepository.findAllByStatus(foundStatus);
+        for (Item foundItem : foundItems) {
+            foundItem.setStatus(noneStatus);
         }
     }
 }

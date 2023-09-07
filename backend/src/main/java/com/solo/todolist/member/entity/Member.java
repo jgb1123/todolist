@@ -35,7 +35,7 @@ public class Member implements UserDetails {
     @Column(unique = true)
     private String email;
 
-    @Column
+    @Column(length = 25)
     private String password;
 
     @Column

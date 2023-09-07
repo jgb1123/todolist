@@ -16,8 +16,8 @@
 </template>
 
 <script setup>
-import axios from "../utils/axios.js";
-import {useStatusStore} from "../store/StatusStore.js";
+import axios from "../../utils/axios.js";
+import {useStatusStore} from "../../store/StatusStore.js";
 
 const statusStore = useStatusStore();
 const $q = useQuasar()

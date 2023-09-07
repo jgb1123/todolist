@@ -10,6 +10,7 @@ public enum ExceptionCode {
     ITEM_NOT_FOUND(404, "Item not found"),
     STATUS_NOT_FOUND(404, "Status not found"),
     STATUS_EXISTS(409, "Status exists"),
+    STATUS_CANNOT_DELETE(409, "Status cannot delete"),
     ROLE_CANNOT_CHANGE(409, "Role cannot change");
     private final int status;
 

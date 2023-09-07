@@ -71,10 +71,6 @@ const email_rules = (val) => {
   if(!val) {
     return '이메일을 입력해주세요.'
   }
-  const kor = val.match(/[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/g);
-  if(kor) {
-    return '한글은 입력할 수 없습니다.'
-  }
   const form = val.match(/^[a-zA-Z0-9]+@[a-zA-Z0-9]+\.[a-zA-Z0-9]+$/);
   if(!form) {
     return '알맞은 이메일 형식을 입력해주세요.'
@@ -107,7 +103,7 @@ const password_confirm_rules = (val) => {
 }
 
 const name_rules = (val) => {
-  const kor = val.match(/[가-힣]/g);
+  const kor = val.match(/[가-힣]+$/g);
   if(!kor) {
     return '이름은 한글로만 입력되어야 합니다.'
   }

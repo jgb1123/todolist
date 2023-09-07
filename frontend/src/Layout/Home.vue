@@ -54,29 +54,33 @@
 
     <q-page-container>
       <div class="q-pa-md">
-        <span>Board</span>
-        <q-toggle v-model="value" />
-        <span>Table</span>
+        <q-toggle
+            v-model="value"
+            checked-icon="list"
+            color="gray"
+            unchecked-icon="view_column"
+            size="80px"
+        />
       </div>
-      <item-input-page ref="statusRef" v-model="addPopUpOpen" @change-add-pop-up="changeAddPopUp" @refresh-todo-list="refreshTodoList"/>
-      <item-edit-page ref="editRef" v-model="editPopUpOpen" @change-edit-pop-up="changeEditPopUp" @refresh-todo-list="refreshTodoList" :nowItem="nowItem"/>
-      <status-input-page v-model="statusPopUpOpen" @change-status-pop-up="changeStatusPopUp"/>
-      <status-delete-page v-model="statusDeletePopUpOpen" @change-delete-status-pop-up="changeDeleteStatusPopUp" />
+      <item-input-pop-up ref="statusRef" v-model="addPopUpOpen" @change-add-pop-up="changeAddPopUp" @refresh-todo-list="refreshTodoList"/>
+      <item-edit-pop-up ref="editRef" v-model="editPopUpOpen" @change-edit-pop-up="changeEditPopUp" @refresh-todo-list="refreshTodoList" :nowItem="nowItem"/>
+      <status-input-pop-up v-model="statusPopUpOpen" @change-status-pop-up="changeStatusPopUp"/>
+      <status-delete-pop-up v-model="statusDeletePopUpOpen" @change-delete-status-pop-up="changeDeleteStatusPopUp" />
       <to-do-list v-if="value === true" ref="todoRef" @refresh-todo-list="refreshTodoList" @change-edit-pop-up="changeEditPopUp"/>
-      <board-page v-if="value === false" />
+      <board v-if="value === false" />
     </q-page-container>
   </q-layout>
 </template>
 
 <script setup>
 import ToDoList from '../components/ToDoList.vue'
-import ItemInputPage from '../components/ItemInputPage.vue'
-import StatusInputPage from "../components/StatusInputPage.vue";
+import ItemInputPopUp from '../components/PopUp/ItemInputPopUp.vue'
+import ItemEditPopUp from "../components/PopUp/ItemEditPopUp.vue";
+import StatusInputPopUp from "../components/PopUp/StatusInputPopUp.vue";
+import StatusDeletePopUp from "../components/PopUp/StatusDeletePopUp.vue";
+import Board from "../components/Board.vue";
 import {useCookies} from "vue3-cookies";
 import router from "../router/index.js";
-import ItemEditPage from "../components/ItemEditPage.vue";
-import BoardPage from "../components/BoardPage.vue";
-import StatusDeletePage from "../components/StatusDeletePage.vue";
 import axios from "../utils/axios.js";
 import {useItemStore} from "../store/ItemStore.js";
 
