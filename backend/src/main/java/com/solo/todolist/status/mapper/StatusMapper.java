@@ -46,13 +46,6 @@ public class StatusMapper {
                 .build();
     }
 
-    public List<StatusResponseDTO> statusesToStatusResponseDTOs(List<Status> statuses) {
-        return statuses
-                .stream()
-                .map(this::statusToStatusResponseDTO)
-                .collect(Collectors.toList());
-    }
-
     public List<StatusItemsResponseDTO> statusesToStatusItemsResponseDTOs(List<Status> statuses) {
         return statuses
                 .stream()

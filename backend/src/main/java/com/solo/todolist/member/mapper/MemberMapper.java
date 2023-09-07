@@ -30,4 +30,5 @@ public class MemberMapper {
                 .name(member.getName())
                 .build();
     }
+
 }
