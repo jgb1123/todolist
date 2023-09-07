@@ -41,7 +41,7 @@ public class Status {
 
     @BatchSize(size = 100)
     @Builder.Default
-    @OneToMany(mappedBy = "status")
+    @OneToMany(mappedBy = "status", fetch = FetchType.EAGER)
     private List<Item> items = new ArrayList<>();
 
     public void setFirstPriority(Long statusId) {

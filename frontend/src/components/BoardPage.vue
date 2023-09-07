@@ -44,9 +44,11 @@ const startDrag = (event, startStatusId) => {
 
 const dragDrop = async (event, endStatusId) => {
   const startStatusId = event.dataTransfer.getData("startStatusId")
-  const res = await axios.post(`/status/swap/${startStatusId}/${endStatusId}`)
-  if(res.status === 200) {
-    await statusStore.getStatuses()
+  if(endStatusId != startStatusId) {
+    const res = await axios.post(`/status/swap/${startStatusId}/${endStatusId}`)
+    if (res.status === 200) {
+      await statusStore.getStatuses()
+    }
   }
 }
 </script>
