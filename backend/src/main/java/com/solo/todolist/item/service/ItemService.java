@@ -1,7 +1,7 @@
 package com.solo.todolist.item.service;
 
-import com.solo.todolist.exception.BusinessLogicException;
-import com.solo.todolist.exception.ExceptionCode;
+import com.solo.todolist.common.exception.BusinessLogicException;
+import com.solo.todolist.common.exception.ExceptionCode;
 import com.solo.todolist.item.entity.Item;
 import com.solo.todolist.item.repository.ItemRepository;
 import com.solo.todolist.member.entity.Member;
@@ -15,8 +15,6 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
-
-import java.util.List;
 
 @Service
 @Transactional

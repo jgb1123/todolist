@@ -1,4 +1,4 @@
-package com.solo.todolist.exception;
+package com.solo.todolist.common.exception;
 
 import io.jsonwebtoken.ExpiredJwtException;
 import jakarta.validation.ConstraintViolationException;
@@ -20,65 +20,65 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 public class GlobalExceptionAdvice {
     @ExceptionHandler
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ErrorResponse handleMethodArgumentNotValidException(
+    public com.solo.todolist.common.exception.ErrorResponse handleMethodArgumentNotValidException(
             MethodArgumentNotValidException e) {
-        return ErrorResponse.of(e.getBindingResult());
+        return com.solo.todolist.common.exception.ErrorResponse.of(e.getBindingResult());
     }
 
     @ExceptionHandler
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ErrorResponse handleConstraintViolationException(
+    public com.solo.todolist.common.exception.ErrorResponse handleConstraintViolationException(
             ConstraintViolationException e) {
 
-        return ErrorResponse.of(e.getConstraintViolations());
+        return com.solo.todolist.common.exception.ErrorResponse.of(e.getConstraintViolations());
     }
 
     @ExceptionHandler
     @ResponseStatus(HttpStatus.METHOD_NOT_ALLOWED)
-    public ErrorResponse handleHttpRequestMethodNotSupportedException(
+    public com.solo.todolist.common.exception.ErrorResponse handleHttpRequestMethodNotSupportedException(
             HttpRequestMethodNotSupportedException e) {
 
-        return ErrorResponse.of(HttpStatus.METHOD_NOT_ALLOWED);
+        return com.solo.todolist.common.exception.ErrorResponse.of(HttpStatus.METHOD_NOT_ALLOWED);
     }
 
     @ExceptionHandler
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ErrorResponse handleHttpMessageNotReadableException(
+    public com.solo.todolist.common.exception.ErrorResponse handleHttpMessageNotReadableException(
             HttpMessageNotReadableException e) {
 
-        return ErrorResponse.of(HttpStatus.BAD_REQUEST,
+        return com.solo.todolist.common.exception.ErrorResponse.of(HttpStatus.BAD_REQUEST,
                 "Required request body is missing");
     }
 
     @ExceptionHandler
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ErrorResponse handleMissingServletRequestParameterException(
+    public com.solo.todolist.common.exception.ErrorResponse handleMissingServletRequestParameterException(
             MissingServletRequestParameterException e) {
 
-        return ErrorResponse.of(HttpStatus.BAD_REQUEST,
+        return com.solo.todolist.common.exception.ErrorResponse.of(HttpStatus.BAD_REQUEST,
                 e.getMessage());
     }
 
     @ExceptionHandler
     @ResponseStatus(HttpStatus.PRECONDITION_FAILED)
-    public ErrorResponse handleExpiredJwtException(
+    public com.solo.todolist.common.exception.ErrorResponse handleExpiredJwtException(
             ExpiredJwtException e) {
 
-        return ErrorResponse.of(HttpStatus.PRECONDITION_FAILED,
+        return com.solo.todolist.common.exception.ErrorResponse.of(HttpStatus.PRECONDITION_FAILED,
                 e.getMessage());
     }
 
     @ExceptionHandler
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-    public ErrorResponse handleException(Exception e) {
+    public com.solo.todolist.common.exception.ErrorResponse handleException(Exception e) {
         log.error("Internal Server Error", e);
 
-        return ErrorResponse.of(HttpStatus.INTERNAL_SERVER_ERROR);
+        return com.solo.todolist.common.exception.ErrorResponse.of(HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     @ExceptionHandler
-    public ResponseEntity<?> handleBusinessLogicException(BusinessLogicException e) {
-        final ErrorResponse response = ErrorResponse.of(e.getExceptionCode());
+    public ResponseEntity<?> handleBusinessLogicException(com.solo.todolist.common.exception.BusinessLogicException e) {
+        final com.solo.todolist.common.exception.ErrorResponse response = com.solo.todolist.common.exception.ErrorResponse.of(e.getExceptionCode());
 
         return new ResponseEntity<>(response, HttpStatus.valueOf(e.getExceptionCode()
                 .getStatus()));

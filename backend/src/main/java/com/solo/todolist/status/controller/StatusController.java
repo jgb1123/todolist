@@ -1,7 +1,7 @@
 package com.solo.todolist.status.controller;
 
-import com.solo.todolist.dto.MultiResponseDTO;
-import com.solo.todolist.dto.SingleResponseDTO;
+import com.solo.todolist.common.dto.MultiResponseDTO;
+import com.solo.todolist.common.dto.SingleResponseDTO;
 import com.solo.todolist.status.dto.*;
 import com.solo.todolist.status.entity.Status;
 import com.solo.todolist.status.mapper.StatusMapper;

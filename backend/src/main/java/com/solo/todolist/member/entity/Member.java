@@ -1,7 +1,7 @@
 package com.solo.todolist.member.entity;
 
-import com.solo.todolist.exception.BusinessLogicException;
-import com.solo.todolist.exception.ExceptionCode;
+import com.solo.todolist.common.exception.BusinessLogicException;
+import com.solo.todolist.common.exception.ExceptionCode;
 import com.solo.todolist.item.entity.Item;
 import com.solo.todolist.status.entity.Status;
 import jakarta.persistence.*;

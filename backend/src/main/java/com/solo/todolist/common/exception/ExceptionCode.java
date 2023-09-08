@@ -1,4 +1,4 @@
-package com.solo.todolist.exception;
+package com.solo.todolist.common.exception;
 
 import lombok.Getter;
 

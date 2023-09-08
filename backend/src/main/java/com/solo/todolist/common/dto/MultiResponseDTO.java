@@ -1,4 +1,4 @@
-package com.solo.todolist.dto;
+package com.solo.todolist.common.dto;
 
 import lombok.Getter;
 import org.springframework.data.domain.Page;

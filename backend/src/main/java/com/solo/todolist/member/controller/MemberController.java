@@ -1,14 +1,12 @@
 package com.solo.todolist.member.controller;
 
-import com.solo.todolist.dto.SingleResponseDTO;
-import com.solo.todolist.member.dto.MemberLoginDTO;
+import com.solo.todolist.common.dto.SingleResponseDTO;
 import com.solo.todolist.member.dto.MemberPatchDTO;
 import com.solo.todolist.member.dto.MemberPostDTO;
 import com.solo.todolist.member.dto.MemberResponseDTO;
 import com.solo.todolist.member.entity.Member;
 import com.solo.todolist.member.mapper.MemberMapper;
 import com.solo.todolist.member.service.MemberService;
-import com.solo.todolist.security.jwt.Tokens;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

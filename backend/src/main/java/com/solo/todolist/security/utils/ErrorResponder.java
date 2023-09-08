@@ -1,7 +1,7 @@
 package com.solo.todolist.security.utils;
 
 import com.google.gson.Gson;
-import com.solo.todolist.exception.ErrorResponse;
+import com.solo.todolist.common.exception.ErrorResponse;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;

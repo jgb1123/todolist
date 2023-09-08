@@ -1,7 +1,5 @@
-package com.solo.todolist.exception;
+package com.solo.todolist.common.exception;
 
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;

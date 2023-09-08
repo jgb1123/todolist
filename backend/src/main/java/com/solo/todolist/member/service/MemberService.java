@@ -1,7 +1,7 @@
 package com.solo.todolist.member.service;
 
-import com.solo.todolist.exception.BusinessLogicException;
-import com.solo.todolist.exception.ExceptionCode;
+import com.solo.todolist.common.exception.BusinessLogicException;
+import com.solo.todolist.common.exception.ExceptionCode;
 import com.solo.todolist.member.entity.Member;
 import com.solo.todolist.member.repository.MemberRepository;
 import com.solo.todolist.security.jwt.JwtTokenizer;

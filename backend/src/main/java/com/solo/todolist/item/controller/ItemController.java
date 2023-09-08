@@ -1,7 +1,7 @@
 package com.solo.todolist.item.controller;
 
-import com.solo.todolist.dto.MultiResponseDTO;
-import com.solo.todolist.dto.SingleResponseDTO;
+import com.solo.todolist.common.dto.MultiResponseDTO;
+import com.solo.todolist.common.dto.SingleResponseDTO;
 import com.solo.todolist.item.dto.ItemPatchDTO;
 import com.solo.todolist.item.dto.ItemPostDTO;
 import com.solo.todolist.item.dto.ItemResponseDTO;
