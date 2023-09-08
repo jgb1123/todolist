@@ -18,8 +18,10 @@
 <script setup>
 import axios from "../../utils/axios.js";
 import {useStatusStore} from "../../store/StatusStore.js";
+import {useItemStore} from "../../store/ItemStore.js";
 
 const statusStore = useStatusStore();
+const itemStore = useItemStore();
 const $q = useQuasar()
 const data = ref({
   statusId: "",

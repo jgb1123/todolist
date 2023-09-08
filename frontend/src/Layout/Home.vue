@@ -120,10 +120,12 @@ const changeEditPopUp = (item) => {
 
 const changeStatusPopUp = () => {
   statusPopUpOpen.value = !statusPopUpOpen.value;
+  getItem()
 }
 
 const changeDeleteStatusPopUp = () => {
   statusDeletePopUpOpen.value = !statusDeletePopUpOpen.value;
+  getItem();
 }
 
 const refreshTodoList = () => {

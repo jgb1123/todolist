@@ -76,6 +76,7 @@ const add = async () => {
 
   if(res.status === 201) {
     console.log('item add')
+    await statusStore.getStatuses()
     alertCreate()
     emit('change-add-pop-up')
     emit('refresh-todo-list')

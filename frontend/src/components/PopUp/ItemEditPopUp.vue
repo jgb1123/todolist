@@ -74,6 +74,7 @@ const edit = async () => {
   })
   if(res.status === 200) {
     await alertChange()
+    await statusStore.getStatuses()
     emit('change-edit-pop-up', 0)
     emit('refresh-todo-list')
     resetData();
