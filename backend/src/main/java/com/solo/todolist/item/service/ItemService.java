@@ -26,14 +26,13 @@ public class ItemService {
     private final StatusService statusService;
 
     public Item createItem(Item item, String email, String statusName) {
+
         Member foundMember = memberService.getVerifiedMember(email);
-        if(StringUtils.hasText(statusName)) {
-            Status foundStatus = statusService.getVerifiedStatusByStatusName(statusName, foundMember);
-            item.setStatus(foundStatus);
-        } else {
-            Status foundStatus = statusService.getVerifiedStatusByStatusName("None", foundMember);
-            item.setStatus(foundStatus);
-        }
+        String str = StringUtils.hasText(statusName) ? statusName : "None";
+
+        Status foundStatus = statusService.getVerifiedStatusByStatusName(str, foundMember);
+
+        item.setStatus(foundStatus);
         item.setMember(foundMember);
         return itemRepository.save(item);
     }

@@ -73,5 +73,8 @@ public class Status {
         }
     }
 
+    public static Status defaultStatus() {
+        return Status.builder().statusName("None").priority(1L).build();
+    }
 
 }

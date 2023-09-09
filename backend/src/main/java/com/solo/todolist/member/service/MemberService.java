@@ -32,7 +32,7 @@ public class MemberService {
 
         Status noneStatus = createAndSaveDefaultStatus();
 
-        member.setEncodingPassword(encoder.encode(member.getPassword()));
+        member.setEncodedPassword(encoder.encode(member.getPassword()));
         member.addStatus(noneStatus);
         member.changeRoles(roles);
         return memberRepository.save(member);
@@ -68,7 +68,7 @@ public class MemberService {
     }
 
     private Status createAndSaveDefaultStatus() {
-        Status noneStatus = Status.builder().statusName("None").priority(1L).build();
+        Status noneStatus = Status.defaultStatus();
         statusRepository.save(noneStatus);
         return noneStatus;
     }
