@@ -68,6 +68,6 @@ public class ItemController {
     @PostMapping("/delete/{itemId}")
     public ResponseEntity<HttpStatus> deleteItem(@PathVariable Long itemId) {
         itemService.deleteItem(itemId);
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        return ResponseEntity.noContent().build();
     }
 }

@@ -50,6 +50,6 @@ public class MemberController {
     @PostMapping("/delete")
     public ResponseEntity<HttpStatus> deleteMember(@AuthenticationPrincipal String email) {
         memberService.deleteMember(email);
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        return ResponseEntity.noContent().build();
     }
 }

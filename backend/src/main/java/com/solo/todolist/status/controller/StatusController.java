@@ -72,6 +72,6 @@ public class StatusController {
     public ResponseEntity<HttpStatus> deleteStatus(@RequestBody StatusDeleteDTO statusDeleteDTO,
                                                    @AuthenticationPrincipal String email) {
         statusService.deleteStatus(statusDeleteDTO.getStatusName(), email);
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        return ResponseEntity.noContent().build();
     }
 }
