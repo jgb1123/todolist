@@ -54,7 +54,7 @@ public class StatusMapper {
         return statuses
                 .stream()
                 .map(this::statusToStatusItemsResponseDto)
-                .collect(Collectors.toList());
+                .toList();
     }
 
     private List<ItemResponseDTO> getSortedItemResponseDTOsByTargetTime(Status status) {

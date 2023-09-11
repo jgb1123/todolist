@@ -45,6 +45,6 @@ public class ItemMapper {
         return items
                 .stream()
                 .map(this::itemToItemResponseDTO)
-                .collect(Collectors.toList());
+                .toList();
     }
 }

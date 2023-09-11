@@ -64,7 +64,7 @@ public class ErrorResponse {
                             error.getRejectedValue() == null ?
                                     "" : error.getRejectedValue().toString(),
                             error.getDefaultMessage()))
-                    .collect(Collectors.toList());
+                    .toList();
         }
     }
 
@@ -81,7 +81,7 @@ public class ErrorResponse {
                             constraintViolation.getPropertyPath().toString(),
                             constraintViolation.getInvalidValue().toString(),
                             constraintViolation.getMessage()))
-                    .collect(Collectors.toList());
+                    .toList();
         }
     }
 
